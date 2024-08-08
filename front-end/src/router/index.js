@@ -5,6 +5,7 @@ import HomePage from '../views/HomePage.vue'
 import LoginPage from '../views/LoginPage.vue'
 import PayPage from '../views/PayPage.vue'
 import RegisterPage from '../views/RegisterPage.vue'
+import StorePage from '../views/StorePage.vue'
 
 const routes = [
   {
@@ -31,6 +32,10 @@ const routes = [
     path: '/register',
     name: 'register',
     component: RegisterPage
+  }, {
+    path: '/store/:storeName',
+    name: 'store',
+    component: StorePage
   }, {
     path: '/',
     redirect: '/home'

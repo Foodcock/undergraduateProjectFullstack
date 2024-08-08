@@ -213,7 +213,7 @@
           <div
             class="wrapper-work"
             data-store="7-11"
-            onclick="redirectToStore('7-11')"
+            @click="redirectToStore('7-11')"
           >
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/7-eleven_logo.svg/250px-7-eleven_logo.svg.png"
@@ -224,7 +224,7 @@
           <div
             class="wrapper-work"
             data-store="全家"
-            onclick="redirectToStore('全家')"
+            @click="redirectToStore('全家')"
           >
             <img
               src="https://static.104.com.tw/b_profile/cust_picture/5268/130000000165268/logo.png?v=20210418003147"
@@ -235,7 +235,7 @@
           <div
             class="wrapper-work"
             data-store="萊爾富"
-            onclick="redirectToStore('萊爾富')"
+            @click="redirectToStore('萊爾富')"
           >
             <img
               src="https://upload.wikimedia.org/wikipedia/zh/5/54/Hi-Life.svg"
@@ -246,7 +246,7 @@
           <div
             class="wrapper-work"
             data-store="OK"
-            onclick="redirectToStore('OK')"
+            @click="redirectToStore('OK')"
           >
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/OK_LOGO-%E6%96%B9%E5%BD%A2-01.png/220px-OK_LOGO-%E6%96%B9%E5%BD%A2-01.png"
@@ -257,7 +257,7 @@
           <div
             class="wrapper-work"
             data-store="全聯"
-            onclick="redirectToStore('全聯')"
+            @click="redirectToStore('全聯')"
           >
             <img
               src="https://curation.culture.tw/api/pic?id=User022cdfcd8-a336-483b-83dc-7a89288f6863&w=1000"
@@ -268,40 +268,7 @@
           <div
             class="wrapper-work"
             data-store="其他店家"
-            onclick="redirectToStore('其他店家')"
-          >
-            <img
-              src="https://storage.googleapis.com/opinion-cms-cwg-tw/article/201808/article-5b75318dc7be2.jpg"
-              alt=""
-            />
-            <h3 class="work_title">其他店家</h3>
-          </div>
-          <div
-            class="wrapper-work"
-            data-store="其他店家"
-            onclick="redirectToStore('其他店家')"
-          >
-            <img
-              src="https://storage.googleapis.com/opinion-cms-cwg-tw/article/201808/article-5b75318dc7be2.jpg"
-              alt=""
-            />
-            <h3 class="work_title">其他店家</h3>
-          </div>
-          <div
-            class="wrapper-work"
-            data-store="其他店家"
-            onclick="redirectToStore('其他店家')"
-          >
-            <img
-              src="https://storage.googleapis.com/opinion-cms-cwg-tw/article/201808/article-5b75318dc7be2.jpg"
-              alt=""
-            />
-            <h3 class="work_title">其他店家</h3>
-          </div>
-          <div
-            class="wrapper-work"
-            data-store="其他店家"
-            onclick="redirectToStore('其他店家')"
+            @click="redirectToStore('其他店家')"
           >
             <img
               src="https://storage.googleapis.com/opinion-cms-cwg-tw/article/201808/article-5b75318dc7be2.jpg"
@@ -318,6 +285,11 @@
 <script>
 export default {
   name: "HomePage",
+  methods: {
+    redirectToStore(storeName) {
+      window.location.href = "store/" + storeName;
+    },
+  },
 };
 </script>
 
@@ -549,7 +521,6 @@ label {
   text-align: center;
 }
 @media screen and (min-width: 320px) and (max-width: 768px) {
-  /* 判斷螢幕大小 還沒做 */
   .logo {
     font-size: small;
     margin-left: -20px;
@@ -557,87 +528,5 @@ label {
   .header-content .navbar {
     margin-right: -40px;
   }
-  /* .side-menu {
-    position: sticky;
-    top: 70px;
-    display: flex;
-    flex-direction: column;
-    width: 90%;
-    height: calc(100vh - 70px);
-    float: left;
-    border:3px solid #000;
-    background: white;
-    margin-bottom: auto;
-    padding: 0 0 10px 0;
-    z-index: 2;
-  }
-  .secondary-content {
-    position: absolute;
-    z-index: -1;
-    justify-content: center;
-  } */
 }
-
-/* .header-nav {
-  border: #ffb500 3px solid;
-  background-color:wheat;
-  padding: 10px;
-  width: 400px;
-  display: flex;
-  justify-content: space-evenly;
-} */
-/* ul {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  margin: 0;
-  padding: 0;
-  width: 500px;
-  font-size: large;
-}
-ul li{
-  list-style: none;
-  border: #262626 3px solid;
-  transition: 0.5s;
-}
-ul li a {
-  background: beige;
-  display: block;
-}
-ul li a span {
-  color: #262626;
-  position: relative;
-  display: inline-block;
-}
-ul li a span:nth-child(1) {
-  background-color: white;
-  width: 30px;
-  text-align: center;
-  padding: 20px;
-  transition: 0.5s;
-  color: #262626;
-  border-right: #262626 5px solid;
-}
-ul li:hover a span:nth-child(1) {
-  background: #f44336;
-}
-ul li a span:nth-child(1) .fas {
-  transition: 0.5s;
-}
-ul li:hover a span:nth-child(1) .fas {
-  transform: rotateY(360deg);
-  color: #fff;
-}
-ul li a span:nth-child(2) {
-  padding: 10px;
-} */
-
-/* .wrapper-selected-works {
-  display: flex;
-  align-items: stretch;
-  width: 10%;
-  column-width: 250px;
-  column-gap: 40px;
-} */
 </style>

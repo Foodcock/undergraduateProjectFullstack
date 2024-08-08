@@ -11,8 +11,10 @@
         <p>店名: {{ item.storeName }}</p>
         <p>折扣價: {{ item.discountedPrice }} 元</p>
         <p>有效期至: {{ item.expirationDate }}</p>
-        <input type="checkbox" v-model="item.checked" />
         <button @click="removeItem(index)">刪除</button>
+        <div>
+          <input type="checkbox" v-model="item.checked" />
+        </div>
       </div>
     </div>
     <div id="totalPrice">
@@ -27,33 +29,7 @@
 export default {
   name: "CartPage",
   data() {
-    let groceries = [
-      {
-        discount: true,
-        discountedPrice: "87.2",
-        expirationDate: "2025-07-21",
-        groceryName: "飯糰",
-        price: "109",
-        storeName: "7-11長興",
-      },
-      {
-        discount: true,
-        discountedPrice: "87.2",
-        expirationDate: "2025-07-21",
-        groceryName: "漢堡",
-        price: "109",
-        storeName: "7-11長興",
-      },
-      {
-        discount: true,
-        discountedPrice: "87.2",
-        expirationDate: "2025-07-21",
-        groceryName: "便當",
-        price: "109",
-        storeName: "7-11長興",
-      },
-    ];
-    // let groceries = JSON.parse(localStorage.getItem('cart')) || [];
+    let groceries = JSON.parse(localStorage.getItem("cart")) || [];
     console.log(groceries);
     groceries = groceries.map((item) => ({ ...item, checked: true }));
     return {
@@ -76,7 +52,7 @@ export default {
     },
     removeItem(index) {
       this.groceries.splice(index, 1);
-      // localStorage.setItem("cart", JSON.stringify(this.groceries));
+      localStorage.setItem("cart", JSON.stringify(this.groceries));
     },
     getImageUrl(groceryName) {
       const images = {
