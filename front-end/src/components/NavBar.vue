@@ -35,11 +35,10 @@
                         ><i class="fa-solid fa-user"></i>User</a
                     >
                     <div class="dropdown-menu">
-                        <a
-                        class="dropdown-item"
-                        onclick="window.location.href='loginPage.html'"
-                        >登入</a
-                        >
+                        <router-link to="/login" id="login-link">
+                            <a class="dropdown-item" href="#">登入</a>
+                        </router-link>
+                        
                         <a class="dropdown-item" onclick="logout()">登出</a>
                     </div>
                     </li>
@@ -63,8 +62,11 @@
                         ><i class="fa-solid fa-globe"></i>購物車</a
                     >
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">我的購物車</a>
-                        <a class="dropdown-item" href="#">tmep</a>
+                        <router-link to="/cart" id="cart-link">
+                            <a class="dropdown-item" href="#">我的購物車</a>
+                        </router-link>
+                        
+                        <a class="dropdown-item" href="#">temp</a>
                     </div>
                     </li>
                 </ul>
@@ -81,6 +83,9 @@ export default {
 </script>
 
 <style scoped>
+a {
+    text-decoration: none;
+}
 .wrap-content {
   box-sizing: border-box;
   width: 1024px;
