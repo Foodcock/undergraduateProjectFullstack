@@ -19,6 +19,8 @@ const GrocerySchema = new mongoose.Schema({
     storeName: {
         type: mongoose.SchemaTypes.String
     },
-
+    storeAddress: {
+        type: mongoose.SchemaTypes.String
+    },
 });
 module.exports = mongoose.model('storeGrocery', GrocerySchema);

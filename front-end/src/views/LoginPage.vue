@@ -76,7 +76,7 @@ export default {
           if (response.ok) {
             this.password = "";
             alert("登入成功");
-            // localStorage.setItem("isLogin", "yes");
+            localStorage.setItem("isLogin", true);
             // localStorage.setItem("user", this.email);
             // const role = await this.getRole(this.email);
             // if (role == "user") {

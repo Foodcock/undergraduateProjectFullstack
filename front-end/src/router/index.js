@@ -6,6 +6,7 @@ import LoginPage from '../views/LoginPage.vue'
 import PayPage from '../views/PayPage.vue'
 import RegisterPage from '../views/RegisterPage.vue'
 import StorePage from '../views/StorePage.vue'
+import MerchantPage from '../views/MerchantPage.vue'
 
 const routes = [
   {
@@ -36,6 +37,10 @@ const routes = [
     path: '/store/:storeName',
     name: 'store',
     component: StorePage
+  }, {
+    path: '/merchant',
+    name: 'merchant',
+    component: MerchantPage
   }, {
     path: '/',
     redirect: '/home'

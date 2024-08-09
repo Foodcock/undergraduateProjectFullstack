@@ -39,11 +39,15 @@
                 ><i class="fa-solid fa-user"></i>User</a
               >
               <div class="dropdown-menu">
-                <router-link to="/login" id="login-link">
-                  <a class="dropdown-item" href="#">登入</a>
+                <router-link
+                  to="/login"
+                  id="login-link"
+                  class="dropdown-item"
+                  v-if="!isLogin"
+                >
+                  登入
                 </router-link>
-
-                <a class="dropdown-item" @click="logout">登出</a>
+                <a class="dropdown-item" @click="logout" v-if="isLogin">登出</a>
               </div>
             </li>
             <li class="nav-item dropdown">
@@ -69,8 +73,6 @@
                 <router-link to="/cart" id="cart-link">
                   <a class="dropdown-item" href="#">我的購物車</a>
                 </router-link>
-
-                <a class="dropdown-item" href="#">temp</a>
               </div>
             </li>
           </ul>
@@ -84,7 +86,10 @@
 export default {
   name: "NavBar",
   data() {
-    return { searchQuery: "" };
+    return {
+      searchQuery: "",
+      isLogin: false,
+    };
   },
   methods: {
     logout() {
@@ -94,6 +99,8 @@ export default {
         .then((response) => {
           if (response.ok) {
             alert("登出成功");
+            localStorage.setItem("isLogin", JSON.stringify(false));
+            this.isLogin = JSON.parse(localStorage.getItem("isLogin"));
             this.$router.push("login");
           } else {
             console.log("錯誤");
@@ -103,6 +110,9 @@ export default {
           console.error("錯誤:", error);
         });
     },
+  },
+  created() {
+    this.isLogin = JSON.parse(localStorage.getItem("isLogin"));
   },
 };
 </script>

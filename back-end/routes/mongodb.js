@@ -101,7 +101,8 @@ router.post('/append', async (req, res) => {
                 discount: itemData.discount,
                 discountedPrice: itemData.discountedPrice,
                 expirationDate: itemData.expirationDate,
-                storeName: itemData.storeName
+                storeName: itemData.storeName,
+                storeAddress: itemData.storeAddress
             };
             await storeGrocery.create(cleanedGrocery);
         }

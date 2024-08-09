@@ -3,7 +3,9 @@
     <NavBar @update-search-query="handleSearchQuery" />
     <div class="main">
       <div class="datadisplay">
-        <div class="row row-cols-md-2 row-cols-lg-5 row-cols-sm-1 g-2 g-lg-3 m-4">
+        <div
+          class="row row-cols-md-2 row-cols-lg-5 row-cols-sm-1 g-2 g-lg-3 m-4"
+        >
           <div class="col" v-for="item in filteredItems" :key="item.id">
             <div class="card mb-3 text-center" style="width: 300px">
               <div>
@@ -16,7 +18,7 @@
               </div>
               <div class="item">
                 <p>商店名稱: {{ item.storeName }}</p>
-                <p>商店地址: 台北市XX區XX路</p>
+                <p>商店地址: {{ item.storeAddress }}</p>
                 <p>商品名: {{ item.groceryName }}</p>
                 <p>折扣價: {{ item.discountedPrice }}</p>
                 <p>過期日期: {{ item.expirationDate }}</p>
@@ -33,7 +35,7 @@
 </template>
 
 <script>
-import NavBar from '@/components/NavBar.vue';
+import NavBar from "@/components/NavBar.vue";
 
 export default {
   name: "StorePage",
@@ -54,7 +56,7 @@ export default {
       return this.items.filter((item) =>
         JSON.stringify(item).includes(this.searchQuery)
       );
-    }
+    },
   },
   components: {
     NavBar,
