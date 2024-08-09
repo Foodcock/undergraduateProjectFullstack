@@ -1,7 +1,9 @@
 <template>
   <div id="nav-bar">
     <div class="header-content wrapper-content">
-      <h1 class="logo">HomePage</h1>
+      <router-link to="/home" id="home-link">
+        <h1 class="logo">FoodCock</h1>
+      </router-link>
       <div class="search">
         <input
           class="search-bar"
@@ -61,7 +63,7 @@
                 class="nav-link dropdown-toggle"
                 data-bs-toggle="dropdown"
                 href="#"
-                ><i class="fa-solid fa-globe"></i>購物車</a
+                ><i class="fa-solid fa-cart-shopping"></i>購物車</a
               >
               <div class="dropdown-menu">
                 <router-link to="/cart" id="cart-link">
@@ -163,7 +165,7 @@ a {
 }
 .logo {
   font-family: "Fira Sans Extra Condensed", sans-serif;
-  text-decoration: underline;
+  text-decoration: none;
 }
 .link-text:hover {
   transition: all 0.2s;
