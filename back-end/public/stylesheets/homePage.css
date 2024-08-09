@@ -64,10 +64,10 @@ a {
   font-family:"Fira Sans Extra Condensed", sans-serif;
   text-decoration: underline;
 }
-.link-text:hover {
+/* .link-text:hover {
   transition: all 0.2s;
   color: #ffb500;;
-}
+} */
 .content-img {
   margin: 0 auto;
   text-align: center;
