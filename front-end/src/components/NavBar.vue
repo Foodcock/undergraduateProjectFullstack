@@ -1,90 +1,113 @@
 <template>
-    <div id="nav-bar">
-        <div class="header-content wrapper-content">
-            <h1 class="logo">HomePage</h1>
-            <div class="search">
-                <input
-                class="search-bar"
-                type="text"
-                name="search"
-                id="search"
-                placeholder="輸入你想尋找的店家"
-                />
-                <button class="search-btn">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </div>
+  <div id="nav-bar">
+    <div class="header-content wrapper-content">
+      <h1 class="logo">HomePage</h1>
+      <div class="search">
+        <input
+          class="search-bar"
+          type="text"
+          name="search"
+          id="search"
+          placeholder="輸入你想尋找的店家"
+          v-model="searchQuery"
+          @input="$emit('update-search-query', searchQuery)"
+        />
+        <button class="search-btn">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </div>
 
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navDropdown"
-                >
-                <span class="navbar-toggler-icon"></span>
-                </button>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navDropdown"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-                <div class="collapse navbar-collapse" id="navDropdown">
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                    <a
-                        class="nav-link dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                        href="#"
-                        ><i class="fa-solid fa-user"></i>User</a
-                    >
-                    <div class="dropdown-menu">
-                        <router-link to="/login" id="login-link">
-                            <a class="dropdown-item" href="#">登入</a>
-                        </router-link>
-                        
-                        <a class="dropdown-item" onclick="logout()">登出</a>
-                    </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                    <a
-                        class="nav-link dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                        href="#"
-                        ><i class="fa-solid fa-globe"></i>語言</a
-                    >
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">繁體中文</a>
-                        <a class="dropdown-item" href="#">ENG</a>
-                    </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                    <a
-                        class="nav-link dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                        href="#"
-                        ><i class="fa-solid fa-globe"></i>購物車</a
-                    >
-                    <div class="dropdown-menu">
-                        <router-link to="/cart" id="cart-link">
-                            <a class="dropdown-item" href="#">我的購物車</a>
-                        </router-link>
-                        
-                        <a class="dropdown-item" href="#">temp</a>
-                    </div>
-                    </li>
-                </ul>
-                </div>
-            </nav>
+        <div class="collapse navbar-collapse" id="navDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                data-bs-toggle="dropdown"
+                href="#"
+                ><i class="fa-solid fa-user"></i>User</a
+              >
+              <div class="dropdown-menu">
+                <router-link to="/login" id="login-link">
+                  <a class="dropdown-item" href="#">登入</a>
+                </router-link>
+
+                <a class="dropdown-item" @click="logout">登出</a>
+              </div>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                data-bs-toggle="dropdown"
+                href="#"
+                ><i class="fa-solid fa-globe"></i>語言</a
+              >
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">繁體中文</a>
+                <a class="dropdown-item" href="#">ENG</a>
+              </div>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                data-bs-toggle="dropdown"
+                href="#"
+                ><i class="fa-solid fa-globe"></i>購物車</a
+              >
+              <div class="dropdown-menu">
+                <router-link to="/cart" id="cart-link">
+                  <a class="dropdown-item" href="#">我的購物車</a>
+                </router-link>
+
+                <a class="dropdown-item" href="#">temp</a>
+              </div>
+            </li>
+          </ul>
         </div>
+      </nav>
     </div>
+  </div>
 </template>
 
 <script>
 export default {
-    name: 'NavBar',
-}
+  name: "NavBar",
+  data() {
+    return { searchQuery: "" };
+  },
+  methods: {
+    logout() {
+      fetch("/auth/logout", {
+        method: "POST",
+      })
+        .then((response) => {
+          if (response.ok) {
+            alert("登出成功");
+            this.$router.push("login");
+          } else {
+            console.log("錯誤");
+          }
+        })
+        .catch((error) => {
+          console.error("錯誤:", error);
+        });
+    },
+  },
+};
 </script>
 
 <style scoped>
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 .wrap-content {
   box-sizing: border-box;

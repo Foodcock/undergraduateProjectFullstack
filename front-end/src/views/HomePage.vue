@@ -1,6 +1,6 @@
 <template>
   <div class="body">
-    <NavBar/>
+    <NavBar @update-search-query="handleSearchQuery" />
     <main class="content-body">
       <aside class="side-menu">
         <div class="side-header">
@@ -141,70 +141,14 @@
         <h2 class="secondary__title section__title"></h2>
         <div class="row mx-4 pt-6 ps-4">
           <div
+            v-for="store in filteredStores"
+            :key="store.name"
             class="wrapper-work"
-            data-store="7-11"
-            @click="redirectToStore('7-11')"
+            :data-store="store.name"
+            @click="redirectToStore(store.name)"
           >
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/7-eleven_logo.svg/250px-7-eleven_logo.svg.png"
-              alt=""
-            />
-            <h3 class="work_title">7-11</h3>
-          </div>
-          <div
-            class="wrapper-work"
-            data-store="全家"
-            @click="redirectToStore('全家')"
-          >
-            <img
-              src="https://static.104.com.tw/b_profile/cust_picture/5268/130000000165268/logo.png?v=20210418003147"
-              alt=""
-            />
-            <h3 class="work_title">全家</h3>
-          </div>
-          <div
-            class="wrapper-work"
-            data-store="萊爾富"
-            @click="redirectToStore('萊爾富')"
-          >
-            <img
-              src="https://upload.wikimedia.org/wikipedia/zh/5/54/Hi-Life.svg"
-              alt=""
-            />
-            <h3 class="work_title">萊爾富</h3>
-          </div>
-          <div
-            class="wrapper-work"
-            data-store="OK"
-            @click="redirectToStore('OK')"
-          >
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/OK_LOGO-%E6%96%B9%E5%BD%A2-01.png/220px-OK_LOGO-%E6%96%B9%E5%BD%A2-01.png"
-              alt=""
-            />
-            <h3 class="work_title">OK</h3>
-          </div>
-          <div
-            class="wrapper-work"
-            data-store="全聯"
-            @click="redirectToStore('全聯')"
-          >
-            <img
-              src="https://curation.culture.tw/api/pic?id=User022cdfcd8-a336-483b-83dc-7a89288f6863&w=1000"
-              alt=""
-            />
-            <h3 class="work_title">全聯</h3>
-          </div>
-          <div
-            class="wrapper-work"
-            data-store="其他店家"
-            @click="redirectToStore('其他店家')"
-          >
-            <img
-              src="https://storage.googleapis.com/opinion-cms-cwg-tw/article/201808/article-5b75318dc7be2.jpg"
-              alt=""
-            />
-            <h3 class="work_title">其他店家</h3>
+            <img :src="store.image" :alt="store.name" />
+            <h3 class="work_title">{{ store.name }}</h3>
           </div>
         </div>
       </section>
@@ -213,16 +157,68 @@
 </template>
 
 <script>
-import NavBar from '../components/NavBar.vue';
+import NavBar from "../components/NavBar.vue";
 
 export default {
   name: "HomePage",
+
+  data() {
+    return {
+      searchQuery: "",
+      stores: [
+        {
+          name: "7-11",
+          image:
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/7-eleven_logo.svg/250px-7-eleven_logo.svg.png",
+        },
+        {
+          name: "全家",
+          image:
+            "https://static.104.com.tw/b_profile/cust_picture/5268/130000000165268/logo.png?v=20210418003147",
+        },
+        {
+          name: "萊爾富",
+          image: "https://upload.wikimedia.org/wikipedia/zh/5/54/Hi-Life.svg",
+        },
+        {
+          name: "OK",
+          image:
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/OK_LOGO-%E6%96%B9%E5%BD%A2-01.png/220px-OK_LOGO-%E6%96%B9%E5%BD%A2-01.png",
+        },
+        {
+          name: "全聯",
+          image:
+            "https://curation.culture.tw/api/pic?id=User022cdfcd8-a336-483b-83dc-7a89288f6863&w=1000",
+        },
+        {
+          name: "其他店家",
+          image:
+            "https://storage.googleapis.com/opinion-cms-cwg-tw/article/201808/article-5b75318dc7be2.jpg",
+        },
+      ],
+    };
+  },
+  computed: {
+    filteredStores() {
+      if (!this.searchQuery) {
+        return this.stores;
+      }
+      return this.stores.filter((store) =>
+        store.name.includes(this.searchQuery)
+      );
+    },
+  },
   components: {
     NavBar,
   },
   methods: {
     redirectToStore(storeName) {
       window.location.href = "store/" + storeName;
+    },
+    handleSearchQuery(query) {
+      this.$nextTick(() => {
+        this.searchQuery = query;
+      });
     },
   },
 };
