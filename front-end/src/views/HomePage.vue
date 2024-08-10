@@ -52,78 +52,28 @@
         </div>
         <div class="side-body">
           <div
+            v-for="(card, index) in cards"
+            :key="index"
             class="card mb-3"
+            @click="redirectToDetail(card)"
             style="max-width: 600px"
-            onclick="redirectToDetail()"
           >
             <div class="row g-0">
               <div class="pic col-md-4">
                 <img
-                  src="https://th.bing.com/th/id/OIP.d4b5Mivbu8__5GpelvRekQHaF7?rs=1&pid=ImgDetMain"
+                  :src="card.imageUrl"
                   class="img-fluid rounded-start"
-                  alt="..."
+                  alt="Uploaded Image"
                 />
               </div>
               <div class="col-md-8">
                 <div class="card-body">
-                  <h5 class="card-title">艋舺雞排</h5>
-                  <p class="card-text">79</p>
+                  <h5 class="card-title">{{ card.groceryName }}</h5>
+                  <p class="card-text">{{ card.discountedPrice }}</p>
                   <p class="card-footer">
-                    <small class="text-body-secondary"
-                      >106台北市大安區敦化南路二段331巷14號</small
-                    >
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="card mb-3"
-            style="max-width: 600px"
-            onclick="redirectToDetail()"
-          >
-            <div class="row g-0">
-              <div class="pic col-md-4">
-                <img
-                  src="https://www.woaisha.com/wp-content/uploads/2021/04/%E7%85%A7%E7%87%92%E8%B1%9A%E8%82%89%E4%BE%BF%E7%95%B6-641.jpg"
-                  class="img-fluid rounded-start"
-                  alt="..."
-                />
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title">大安區某200塊便當</h5>
-                  <p class="card-text">180</p>
-                  <p class="card-footer">
-                    <small class="text-body-secondary"
-                      >106台北市大安區基隆路三段85號</small
-                    >
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="card mb-3"
-            style="max-width: 600px"
-            onclick="redirectToDetail()"
-          >
-            <div class="row g-0">
-              <div class="pic col-md-4">
-                <img
-                  src="https://image.taiwantoday.tw/images/content_info/img20240116151958055.jpg"
-                  class="img-fluid rounded-start"
-                  alt="..."
-                />
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title">新店區某100塊的麵</h5>
-                  <p class="card-text">88</p>
-                  <p class="card-footer">
-                    <small class="text-body-secondary"
-                      >231新北市新店區中正路542之5號1樓</small
-                    >
+                    <small class="text-body-secondary">{{
+                      card.storeAddress
+                    }}</small>
                   </p>
                 </div>
               </div>
@@ -131,7 +81,7 @@
           </div>
         </div>
         <div class="side-footer">
-          <button id="toAddPageButton" onclick="toAddPage()">
+          <button id="toAddPageButton" @click="toAddPage">
             <i class="fa-solid fa-plus"></i>
           </button>
         </div>
@@ -188,7 +138,7 @@ export default {
         {
           name: "全聯",
           image:
-            "https://curation.culture.tw/api/pic?id=User022cdfcd8-a336-483b-83dc-7a89288f6863&w=1000",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHX1eoffJgvo-2CSS9ztyRqYeRG6PRMg2FsA&s",
         },
         {
           name: "其他店家",
@@ -196,6 +146,57 @@ export default {
             "https://storage.googleapis.com/opinion-cms-cwg-tw/article/201808/article-5b75318dc7be2.jpg",
         },
       ],
+      cards: [
+        {
+          imageUrl:
+            "https://th.bing.com/th/id/OIP.d4b5Mivbu8__5GpelvRekQHaF7?rs=1&pid=ImgDetMain",
+          groceryName: "艋舺雞排",
+          discountedPrice: 79,
+          storeAddress: "106台北市大安區敦化南路二段331巷14號",
+        },
+        {
+          imageUrl:
+            "https://www.woaisha.com/wp-content/uploads/2021/04/%E7%85%A7%E7%87%92%E8%B1%9A%E8%82%89%E4%BE%BF%E7%95%B6-641.jpg",
+          groceryName: "大安區某200塊便當",
+          discountedPrice: 180,
+          storeAddress: "106台北市大安區基隆路三段85號",
+        },
+        {
+          imageUrl:
+            "https://image.taiwantoday.tw/images/content_info/img20240116151958055.jpg",
+          groceryName: "新店區某100塊的麵",
+          discountedPrice: 88,
+          storeAddress: "231新北市新店區中正路542之5號1樓",
+        },
+      ],
+      socket: null,
+    };
+  },
+  mounted() {
+    this.socket = new WebSocket("ws://localhost:8000");
+
+    this.socket.onopen = () => {
+      console.log("WebSocket connection opened.");
+    };
+
+    this.socket.onmessage = (event) => {
+      event.data
+        .text()
+        .then((text) => {
+          console.log("Received:", JSON.parse(text).ciphertext);
+          this.decrypt(JSON.parse(text));
+        })
+        .catch((error) => {
+          console.error("Error converting Blob to text:", error);
+        });
+    };
+
+    this.socket.onclose = () => {
+      console.log("WebSocket connection closed.");
+    };
+
+    this.socket.onerror = (error) => {
+      console.error("WebSocket error:", error);
     };
   },
   computed: {
@@ -220,7 +221,36 @@ export default {
         this.searchQuery = query;
       });
     },
+    toAddPage() {
+      this.$router.push("/add");
+    },
+    redirectToDetail(card) {
+      console.log("Redirect to detail page with:", card);
+
+      this.$router.push("/details");
+    },
+    decrypt(input) {
+      fetch("/crypto/decrypt", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(input),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          this.cards.push(data);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    },
   },
+  // beforeUnmount() {
+  //   if (this.socket) {
+  //     this.socket.close();
+  //   }
+  // },
 };
 </script>
 
