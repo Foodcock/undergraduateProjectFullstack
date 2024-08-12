@@ -4,6 +4,7 @@ const User = require('../database/schemas/User');
 const GoogleUser = require('../database/schemas/GoogleUser');
 const GitHubUser = require('../database/schemas/GitHubUser');
 const { hashPassword } = require('../utils/helpers');
+const { send_mail } = require('../utils/mailSender');
 const Brute = require('express-brute');
 require('../strategies/github')
 require('../strategies/google')
@@ -169,9 +170,27 @@ router.post('/register', async (request, response) => {
         const name = request.body.name;
         const phoneNumber = request.body.phoneNumber;
         const role = request.body.role;
-        await User.create({ password, email, name, phoneNumber, role });
+        const token = crypto.randomBytes(32).toString('hex');
+        await User.create({ password, email, name, phoneNumber, role, verificationToken: token, verified: false });
+        const verificationLink = `http://localhost:3000/auth/verify?token=${token}`;
+        send_mail(email, `Please verify your account by clicking <a href="${verificationLink}">here</a>`);
         response.send(201);
     }
+});
+
+router.get('/verify', async (req, res) => {
+    const { token } = req.query;
+
+    const user = await User.findOne({ verificationToken: token });
+    if (!user) {
+        return res.status(400).send('Invalid token');
+    }
+
+    user.verified = true;
+    user.verificationToken = undefined;
+    await user.save();
+
+    res.send('Your account has been verified!');
 });
 
 module.exports = router;

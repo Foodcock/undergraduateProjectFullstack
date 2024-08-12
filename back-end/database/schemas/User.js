@@ -21,6 +21,12 @@ const UserSchema = new mongoose.Schema({
     role: {
         type: mongoose.SchemaTypes.String,
     },
+    verificationToken: {
+        type: mongoose.SchemaTypes.String,
+    },
+    verified: {
+        type: mongoose.SchemaTypes.Boolean,
+    },
     createdAt: {
         type: mongoose.SchemaTypes.Date,
         required: true,
