@@ -16,6 +16,7 @@ var authRouter = require('./routes/auth');
 var mongodbRouter = require('./routes/mongodb');
 var imgurRouter = require('./routes/imgur');
 var cryptoRouter = require('./routes/crypto');
+var mailRouter = require('./routes/mail');
 
 const GoogleUser = require('./database/schemas/GoogleUser');
 const GitHubUser = require('./database/schemas/GitHubUser');
@@ -113,6 +114,7 @@ app.use('/auth', authRouter);
 app.use('/db', mongodbRouter);
 app.use('/imgur', imgurRouter);
 app.use('/crypto', cryptoRouter);
+app.use('/mail', mailRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

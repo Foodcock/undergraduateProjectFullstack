@@ -76,16 +76,16 @@ export default {
           if (response.ok) {
             this.password = "";
             alert("登入成功");
-            localStorage.setItem("isLogin", true);
-            // localStorage.setItem("user", this.email);
-            // const role = await this.getRole(this.email);
-            // if (role == "user") {
-            // localStorage.setItem("role", "user");
-            window.location.href = "home";
-            // } else if (role == "merchant") {
-            // localStorage.setItem("role", "merchant");
-            // window.location.href = "merchantPage.html";
-            // }
+            localStorage.setItem("isLogin", JSON.stringify(true));
+            localStorage.setItem("userEmail", this.email);
+            const role = await this.getRole(this.email);
+            if (role == "user") {
+              localStorage.setItem("role", "user");
+              window.location.href = "home";
+            } else if (role == "merchant") {
+              localStorage.setItem("role", "merchant");
+              window.location.href = "merchant";
+            }
           } else if (response.status === 429) {
             alert("嘗試次數過多!");
           } else {
@@ -121,7 +121,6 @@ export default {
       }
     },
 
-    //改port
     loginByGoogle() {
       window.location.href = "http://localhost:3000/auth/google";
     },
@@ -148,7 +147,6 @@ export default {
   align-items: center;
   min-height: 100vh;
   background-color: rgba(144, 189, 231, 0.479);
-  /* background: url(../images/360_F_355607062_zYMS8jaz4SfoykpWz5oViRVKL32IabTP.jpg); */
   background-size: cover;
   background-position: center;
 }

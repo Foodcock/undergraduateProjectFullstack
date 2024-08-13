@@ -92,26 +92,85 @@ export default {
     },
   },
   methods: {
+    generateHtmlMessage(method) {
+      const { name, phone, address } = this.userInfo;
+      const deliveryType =
+        this.deliveryOptions.deliveryType === "delivery" ? "外送" : "自取";
+      const orderNote = this.orderNote;
+      const totalPrice = this.totalPrice;
+
+      const groceryItemsHtml = this.groceries
+        .map(
+          (item) => `
+        <div>
+          <h3>商品名稱: ${item.groceryName}</h3>
+          <img src="${this.getImageUrl(
+            item.groceryName
+          )}" alt="商品圖片" style="max-width: 100px;" />
+          <p>店名: ${item.storeName}</p>
+          <p>折扣價: ${item.discountedPrice} 元</p>
+          <p>有效期至: ${item.expirationDate}</p>
+        </div>
+      `
+        )
+        .join("");
+
+      return `
+      <div>
+        <h1>訂單確認</h1>
+        <h2>購買人資訊</h2>
+        <p>姓名: ${name}</p>
+        <p>電話: ${phone}</p>
+        ${deliveryType === "外送" ? `<p>地址: ${address}</p>` : ""}
+        
+        <h2>購買商品</h2>
+        ${groceryItemsHtml}
+        <h2>總價: ${totalPrice} 元</h2>
+        
+        <h2>備註</h2>
+        <p>${orderNote}</p>
+        
+        <h2>配送方式</h2>
+        <p>${deliveryType}</p>
+        
+        <h2>支付方式</h2>
+        <p>${method || "未選擇"}</p>
+      </div>
+    `;
+    },
     pay(method) {
       if (this.deliveryOptions.deliveryType == "") {
         alert("請選擇自取或外送");
         return;
       }
-      if (this.deliveryOptions.deliveryType == "pickup") {
-        alert("自取");
-        alert(method + "扣款成功!");
-      } else if (this.deliveryOptions.deliveryType == "delivery") {
-        alert(method + "扣款成功!");
-        alert("外送");
-      }
+      fetch("/mail/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: localStorage.getItem("userEmail"),
+          message: this.generateHtmlMessage(method),
+        }),
+      })
+        .then((response) => {
+          if (response.ok) {
+            alert("已寄送，" + method);
+          } else {
+            alert("錯誤");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
     },
     getImageUrl(groceryName) {
       const images = {
-        飯糰: "images/onigiri.png",
-        麵包: "images/bread.png",
-        漢堡: "images/burger.png",
-        三明治: "images/sandwich.png",
-        便當: "images/bento.png",
+        飯糰: "https://i.imgur.com/0zadqbP.png",
+        麵包: "https://i.imgur.com/auWtXfJ.png",
+        漢堡: "https://i.imgur.com/DyoeYkM.png",
+        三明治: "https://imgur.com/RKYPT9e.png",
+        便當: "https://imgur.com/TKNueow.png",
       };
       return images[groceryName] || "images/default.png";
     },

@@ -100,6 +100,8 @@ export default {
           if (response.ok) {
             alert("登出成功");
             localStorage.setItem("isLogin", JSON.stringify(false));
+            localStorage.setItem("role", "quest");
+            localStorage.setItem("userEmail", "");
             this.isLogin = JSON.parse(localStorage.getItem("isLogin"));
             this.$router.push("login");
           } else {

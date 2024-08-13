@@ -173,7 +173,7 @@ router.post('/register', async (request, response) => {
         const token = crypto.randomBytes(32).toString('hex');
         await User.create({ password, email, name, phoneNumber, role, verificationToken: token, verified: false });
         const verificationLink = `http://localhost:3000/auth/verify?token=${token}`;
-        send_mail(email, `Please verify your account by clicking <a href="${verificationLink}">here</a>`);
+        send_mail(email, "會員驗證", `Please verify your account by clicking <a href="${verificationLink}">here</a>`);
         response.send(201);
     }
 });
