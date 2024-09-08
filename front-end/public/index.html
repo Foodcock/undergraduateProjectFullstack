@@ -32,11 +32,36 @@
   <div id="app"></div>
 </body>
 <script>
+  function receiveHandler(event) {
+    const message = event.data;
+    if (message.output.generic && message.output.generic[0].text.includes("為您跳轉")){
+      store = message.output.generic[0].text.substring(8, 12);
+      window.location.href = '/store/'+ store;
+    }
+  }
+
+  async function onLoad(instance) {
+    instance.on({
+      type: 'customResponse',
+      handler: (event, instance) => {
+        const { message } = event.data;
+        if (message.output.generic && message.output.generic[0].text) {
+          receiveHandler(event, instance);
+        }
+      },
+    });
+    instance.on({ type: 'receive', handler: receiveHandler});
+
+    await instance.render();
+  }
+
   window.watsonAssistantChatOptions = {
     integrationID: "2b7bea96-87a9-4d0c-b8de-26d6efb37918", // The ID of this integration.
     region: "us-south", // The region your integration is hosted in.
     serviceInstanceID: "f408bd94-9c83-4b5a-82cb-fbfc6cf679b3", // The ID of your service instance.
-    onLoad: async (instance) => { await instance.render(); }
+    debug:true,
+    onLoad:onLoad,
+    // async (instance) => { await instance.render(); }
   };
   setTimeout(function(){
     const t=document.createElement('script');
