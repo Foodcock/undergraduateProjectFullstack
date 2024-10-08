@@ -2,7 +2,7 @@
   <div class="body">
     <form
       id="addForm"
-      @submit.prevent="handleAddForm"
+      @submit.prevent="getCurrentLocationAndHandleAddForm"
       enctype="multipart/form-data"
     >
       <h1>新增頁面</h1>
@@ -76,12 +76,7 @@
           <Marker :options="{ position: center }" />
         </GoogleMap>
       </div>
-      <button
-        class="button btn btn-outline-primary"
-        @click="getCurrentLocationAndHandleAddForm"
-      >
-        定位後提交
-      </button>
+      <button class="button btn btn-outline-primary">定位後提交</button>
     </form>
   </div>
 </template>
