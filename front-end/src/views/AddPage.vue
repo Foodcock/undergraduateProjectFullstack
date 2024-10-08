@@ -68,15 +68,18 @@
 
       <div id="map">
         <GoogleMap
-        api-key="AIzaSyCpuN3PhDWXAlLBIJcS5iy9Kr7_R4Be74o"
-        style="width: 100%; height: 100%"
-        :center="center"
-        :zoom="14"
+          api-key="AIzaSyCpuN3PhDWXAlLBIJcS5iy9Kr7_R4Be74o"
+          style="width: 100%; height: 100%"
+          :center="center"
+          :zoom="14"
         >
-        <Marker :options="{ position: center }" />
+          <Marker :options="{ position: center }" />
         </GoogleMap>
       </div>
-      <button class="button btn btn-outline-primary" @click="getCurrentLocationAndHandleAddForm">
+      <button
+        class="button btn btn-outline-primary"
+        @click="getCurrentLocationAndHandleAddForm"
+      >
         定位後提交
       </button>
     </form>
@@ -84,12 +87,12 @@
 </template>
 
 <script>
-import { GoogleMap, Marker } from 'vue3-google-map'
+import { GoogleMap, Marker } from "vue3-google-map";
 export default {
   name: "AddPage",
   components: {
     GoogleMap,
-    Marker
+    Marker,
   },
   data() {
     return {
@@ -101,7 +104,6 @@ export default {
       file: null,
       storeAddress: "",
       center: { lat: 40.689247, lng: -74.044502 },
-      
     };
   },
   methods: {
@@ -126,7 +128,7 @@ export default {
             storeName: this.storeName,
             storeAddress: this.storeAddress,
             imageUrl: imageUrl,
-            addedBy: this.center,
+            addedBy: localStorage.getItem("userEmail"),
           };
 
           return fetch("/db/items", {
@@ -242,7 +244,6 @@ export default {
     },
   },
 };
-
 </script>
 
 <style scoped>
