@@ -150,21 +150,21 @@ export default {
         {
           imageUrl:
             "https://th.bing.com/th/id/OIP.d4b5Mivbu8__5GpelvRekQHaF7?rs=1&pid=ImgDetMain",
-          groceryName: "艋舺雞排",
+          groceryName: "即期雞排",
           discountedPrice: 79,
           storeAddress: "106台北市大安區敦化南路二段331巷14號",
         },
         {
           imageUrl:
             "https://www.woaisha.com/wp-content/uploads/2021/04/%E7%85%A7%E7%87%92%E8%B1%9A%E8%82%89%E4%BE%BF%E7%95%B6-641.jpg",
-          groceryName: "大安區某200塊便當",
+          groceryName: "大安區便當店",
           discountedPrice: 180,
           storeAddress: "106台北市大安區基隆路三段85號",
         },
         {
           imageUrl:
             "https://image.taiwantoday.tw/images/content_info/img20240116151958055.jpg",
-          groceryName: "新店區某100塊的麵",
+          groceryName: "新店區麵店",
           discountedPrice: 88,
           storeAddress: "231新北市新店區中正路542之5號1樓",
         },
@@ -322,7 +322,6 @@ label {
   float: left;
 }
 .side-title {
-  background-color: #4e7d8b;
 }
 /* 每個品項的設定 */
 .side-body {

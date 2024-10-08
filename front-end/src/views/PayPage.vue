@@ -155,7 +155,7 @@ export default {
       })
         .then((response) => {
           if (response.ok) {
-            alert("已寄送，" + method);
+            alert("付款成功，使用: " + method);
           } else {
             alert("錯誤");
           }

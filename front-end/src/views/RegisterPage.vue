@@ -73,15 +73,15 @@ export default {
       let role = "user";
       if (this.isMerchant) role = "merchant";
 
-      const passwordRequirements =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,72}$/;
+      // const passwordRequirements =
+      // /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,72}$/;
 
-      if (!passwordRequirements.test(this.password)) {
-        alert(
-          "密碼需要介於12與72字元且包含「大寫字母 + 小寫字母 + 數字 + 特殊符號」"
-        );
-        return;
-      }
+      // if (!passwordRequirements.test(this.password)) {
+      //   alert(
+      //     "密碼需要介於12與72字元且包含「大寫字母 + 小寫字母 + 數字 + 特殊符號」"
+      //   );
+      //   return;
+      // }
 
       if (this.password != this.comfirmPassword) {
         alert("密碼不一致!");
