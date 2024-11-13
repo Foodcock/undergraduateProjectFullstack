@@ -145,8 +145,9 @@ const bruteforce = new Brute(store, {
     maxWait: 60 * 60 * 1000,
     lifetime: 24 * 60 * 60,
 });
+const bruteForceMiddleware = process.env.BRUTEFORCE_SWITCH === 'true' ? bruteforce.prevent : (req, res, next) => next();
 
-router.post('/login', bruteforce.prevent, passport.authenticate('local'), (req, res) => {
+router.post('/login', bruteForceMiddleware, passport.authenticate('local'), (req, res) => {
     console.log('Logged In');
     res.sendStatus(200);
 });

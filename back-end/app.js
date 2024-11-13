@@ -56,54 +56,56 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// // 忽略 favicon.ico 的請求
-// app.use('/favicon.ico', (req, res) => res.status(204).end());
+// casbin enforcer
+async function initializeEnforcer() {
+  const enforcer = await newEnforcer(path.join(__dirname, 'casbin/model.conf'), path.join(__dirname, 'casbin/policy.csv'));
+  return enforcer;
+}
 
-// // casbin enforcer
-// async function initializeEnforcer() {
-//   const enforcer = await newEnforcer(path.join(__dirname, 'casbin/model.conf'), path.join(__dirname, 'casbin/policy.csv'));
-//   return enforcer;
-// }
-// // casbin middleware
-// app.use(async (req, res, next) => {
-//   const enforcer = await initializeEnforcer();
+if (process.env.RBAC_SWITCH === 'true') {
+  // 忽略 favicon.ico 的請求
+  app.use('/favicon.ico', (req, res) => res.status(204).end());
+  // casbin middleware
+  app.use(async (req, res, next) => {
+    const enforcer = await initializeEnforcer();
 
-//   let UserRole = 'guest';
-//   if (req.user) {
-//     const { provider, displayName, username, role } = req.user;
+    let UserRole = 'guest';
+    if (req.user) {
+      const { provider, displayName, username, role } = req.user;
 
-//     switch (provider) {
-//       case 'google':
-//         const googleUser = await GoogleUser.findOne({ name: displayName });
-//         UserRole = googleUser.role;
-//         break;
-//       case 'github':
-//         const gitHubUser = await GitHubUser.findOne({ name: username });
-//         UserRole = gitHubUser.role;
-//         break;
-//       default:
-//         UserRole = role;
-//     }
-//   }
+      switch (provider) {
+        case 'google':
+          const googleUser = await GoogleUser.findOne({ name: displayName });
+          UserRole = googleUser.role;
+          break;
+        case 'github':
+          const gitHubUser = await GitHubUser.findOne({ name: username });
+          UserRole = gitHubUser.role;
+          break;
+        default:
+          UserRole = role;
+      }
+    }
 
-//   const { path: obj } = req;
-//   const act = methodToAction[req.method];
-//   console.log({ UserRole, obj, act });
+    const { path: obj } = req;
+    const act = methodToAction[req.method];
+    console.log({ UserRole, obj, act });
 
-//   if (!UserRole || !obj || !act) {
-//     return res.status(400).send('Missing parameters: sub, obj, act');
-//   }
+    if (!UserRole || !obj || !act) {
+      return res.status(400).send('Missing parameters: sub, obj, act');
+    }
 
-//   const allowed = await enforcer.enforce(UserRole, obj, act);
+    const allowed = await enforcer.enforce(UserRole, obj, act);
 
-//   if (allowed) {
-//     console.log("allowed!");
-//     next();
-//   } else {
-//     // 在伺服器端重定向到登錄頁面
-//     res.redirect('/notAllowed.html');
-//   }
-// });
+    if (allowed) {
+      console.log("allowed!");
+      next();
+    } else {
+      // 在伺服器端重定向到登錄頁面
+      res.redirect('/notAllowed.html');
+    }
+  });
+}
 
 // 處理靜態文件的請求要放在casbin後面
 app.use(express.static(path.join(__dirname, 'public')));

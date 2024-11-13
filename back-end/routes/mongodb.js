@@ -9,6 +9,7 @@ const Brute = require('express-brute');
 
 router.use(express.json());
 
+
 const store = new Brute.MemoryStore();
 const bruteforce = new Brute(store, {
     freeRetries: 5,
@@ -16,9 +17,10 @@ const bruteforce = new Brute(store, {
     maxWait: 60 * 60 * 1000,
     lifetime: 24 * 60 * 60,
 });
+const bruteForceMiddleware = process.env.BRUTEFORCE_SWITCH === 'true' ? bruteforce.prevent : (req, res, next) => next();
 
 //新增小道消息
-router.post('/items', bruteforce.prevent, async (req, res) => {
+router.post('/items', bruteForceMiddleware, async (req, res) => {
     try {
         console.log(req.body);
         const newGrocery = await Grocery.create(req.body);
