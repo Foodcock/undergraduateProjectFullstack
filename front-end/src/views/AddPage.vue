@@ -2,7 +2,7 @@
   <div class="body">
     <form
       id="addForm"
-      @submit.prevent="getCurrentLocationAndHandleAddForm"
+      @submit.prevent="handleAddForm"
       enctype="multipart/form-data"
     >
       <div class="inputBox">
@@ -65,30 +65,35 @@
         />
       </div>
 
-      <div id="map">
-        <GoogleMap
-          api-key="AIzaSyCpuN3PhDWXAlLBIJcS5iy9Kr7_R4Be74o"
-          style="width: 100%; height: 100%"
-          :center="center"
-          :zoom="14"
-        >
-          <Marker :options="{ position: center }" />
-        </GoogleMap>
+      <div class="inputBox">
+        <input
+          type="text"
+          class="form-control"
+          id="storeAddress"
+          v-model="storeAddress"
+          placeholder="商店地址"
+        />
       </div>
 
-      <button class="button btn btn-outline-primary">定位後提交</button>
+      <div >
+        <button type="button" id="addressBtn" @click="getCurrentLocation" class="button btn btn-outline-primary">
+          獲取當前地址
+        </button>
+      </div>
+
+      <button class="button btn btn-outline-primary">提交</button>
     </form>
   </div>
 </template>
 
 <script>
-import { GoogleMap, Marker } from "vue3-google-map";
+// import { GoogleMap, Marker } from "vue3-google-map";
 export default {
   name: "AddPage",
-  components: {
-    GoogleMap,
-    Marker,
-  },
+  // components: {
+  //   GoogleMap,
+  //   Marker,
+  // },
   data() {
     return {
       groceryName: "",
@@ -98,35 +103,30 @@ export default {
       storeName: "",
       file: null,
       storeAddress: "",
-      address: "",
-      center: { lat: 40.689247, lng: -74.044502 },
+      // center: { lat: 40.689247, lng: -74.044502 },
     };
   },
   methods: {
     handleFileUpload(event) {
       this.file = event.target.files[0];
     },
-    async getCurrentLocationAndHandleAddForm() {
-      await this.getCurrentLocation(); // 等待第一个函数完成
-      this.handleAddForm(); // 然后执行第二个函数
-    },
     handleAddForm() {
       let formData = {};
       this.getImageUrl()
-        .then((imageUrl) => {
+      .then((imageUrl) => {
           formData = {
             groceryName: this.groceryName,
             originalPrice: this.originalPrice,
             discount: this.discount,
             discountedPrice:
-              (this.originalPrice * parseFloat(this.discount)) / 100,
+            (this.originalPrice * parseFloat(this.discount)) / 100,
             expirationDate: this.expirationDate,
             storeName: this.storeName,
             storeAddress: this.storeAddress,
             imageUrl: imageUrl,
             addedBy: localStorage.getItem("userEmail"),
           };
-
+          
           return fetch("/db/items", {
             method: "POST",
             headers: {
@@ -139,9 +139,9 @@ export default {
           if (response.ok) {
             alert("新增成功");
             this.encrypt(formData);
-
-          // 發射事件給父組件，通知新增成功
-          this.$emit('add-success');
+            
+            // 發射事件給父組件，通知新增成功
+            this.$emit('add-success');
           } else {
             alert("嘗試次數過多，請等待後嘗試");
           }
@@ -149,15 +149,15 @@ export default {
         .catch((error) => {
           console.error("錯誤:", error);
         });
-    },
-    getImageUrl() {
-      const formData = new FormData();
-      formData.append("file", this.file);
-
-      return fetch("/imgur/upload", {
-        method: "POST",
-        body: formData,
-      })
+      },
+      getImageUrl() {
+        const formData = new FormData();
+        formData.append("file", this.file);
+        
+        return fetch("/imgur/upload", {
+          method: "POST",
+          body: formData,
+        })
         .then((response) => {
           if (response.ok) {
             return response.json();
@@ -173,17 +173,17 @@ export default {
           console.error("錯誤:", error);
           throw error;
         });
-    },
-    encrypt(plaintext) {
-      const socket = new WebSocket("ws://localhost:8000");
-
-      fetch("/crypto/encrypt", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ plaintext: plaintext }),
-      })
+      },
+      encrypt(plaintext) {
+        const socket = new WebSocket("ws://localhost:8000");
+        
+        fetch("/crypto/encrypt", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ plaintext: plaintext }),
+        })
         .then((response) => response.json())
         .then((data) => {
           console.log("加密完成");
@@ -193,56 +193,65 @@ export default {
         .catch((error) => {
           console.error("Error:", error);
         });
-    },
-    async getCurrentLocation() {
-      // 獲取當前地理位置
-      if (navigator.geolocation) {
-        await navigator.geolocation.getCurrentPosition(
+      },
+      getCurrentLocation() {
+        alert('獲取當前地理位置')
+        // 獲取當前地理位置
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
           (position) => {
             this.center = {
               lat: position.coords.latitude,
               lng: position.coords.longitude,
             };
-
+            
             // 使用 Google Geocoding API 將經緯度轉換為地址
             this.getGeocode(this.center.lat, this.center.lng)
-              .then((address) => {
-                this.storeAddress = address;
-                console.log(this.storeAddress);
+            .then((address) => {
+              this.storeAddress = address;
+              console.log(this.storeAddress);
               })
               .catch((error) => {
                 console.error("Geocoding 失敗:", error);
               });
-          },
-          (error) => {
-            console.error("獲取當前位置失敗", error);
-            alert("無法獲取當前位置");
-          }
-        );
-      } else {
-        alert("瀏覽器不支援地理位置");
-      }
-    },
-    getGeocode(lat, lng) {
-      const geocoder = new window.google.maps.Geocoder();
-      const latlng = { lat: parseFloat(lat), lng: parseFloat(lng) };
-
-      return new Promise((resolve, reject) => {
-        geocoder.geocode({ location: latlng }, (results, status) => {
-          if (status === "OK") {
-            if (results[0]) {
-              resolve(results[0].formatted_address); // 返回格式化的地址
-            } else {
-              reject("沒有找到結果");
+            },
+            (error) => {
+              console.error("獲取當前位置失敗", error);
+              alert("無法獲取當前位置");
             }
-          } else {
-            reject("Geocoder 失敗，原因：" + status);
-          }
+          );
+        } else {
+          alert("瀏覽器不支援地理位置");
+        }
+      },
+      getGeocode(lat, lng) {
+        const geocoder = new window.google.maps.Geocoder();
+        const latlng = { lat: parseFloat(lat), lng: parseFloat(lng) };
+        
+        return new Promise((resolve, reject) => {
+          geocoder.geocode({ location: latlng }, (results, status) => {
+            if (status === "OK") {
+              if (results[0]) {
+                resolve(results[0].formatted_address); // 返回格式化的地址
+              } else {
+                reject("沒有找到結果");
+              }
+            } else {
+              reject("Geocoder 失敗，原因：" + status);
+            }
+          });
         });
-      });
+      },
+      switchBtn(event) {
+        alert(event.target.id);
+        // if (event.target.id === "addressBtn") {
+        //   this.getCurrentLocation()
+        // }else{
+        //   this.handleAddForm()
+        // }
+      },
     },
-  },
-};
+  };
 </script>
 
 <style scoped>
