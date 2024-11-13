@@ -81,12 +81,52 @@
           </div>
         </div>
         <div class="side-footer">
-          <button id="toAddPageButton" @click="toAddPage">
+          <button 
+            id="toAddPageButton"
+            data-bs-toggle="modal"
+            data-bs-target="#addItemModal"
+          >
             <i class="fa-solid fa-plus"></i>
           </button>
         </div>
       </aside>
 
+      <!-- AddPage Modal -->
+      <div
+        class="modal fade"
+        id="addItemModal"
+        tabindex="-1"
+        aria-labelledby="addItemModalLabel"
+        aria-hidden="true"
+        ref="addItemModal"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 class="modal-title" id="addItemModalLabel">新增商品</h2>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <!-- 引入 AddPage 的表單 -->
+              <AddPage @add-success="handleAddSuccess" />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                關閉
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <section class="secondary-content wrapper-content">
         <h2 class="secondary__title section__title"></h2>
         <div class="row mx-4 pt-6 ps-4">
@@ -108,6 +148,8 @@
 
 <script>
 import NavBar from "../components/NavBar.vue";
+import AddPage from "./AddPage.vue";
+import { Modal } from 'bootstrap';
 
 export default {
   name: "HomePage",
@@ -211,6 +253,7 @@ export default {
   },
   components: {
     NavBar,
+    AddPage,
   },
   methods: {
     redirectToStore(storeName) {
@@ -244,6 +287,20 @@ export default {
         .catch((error) => {
           console.error("Error:", error);
         });
+    },
+    handleAddSuccess() {
+      const modalElement = this.$refs.addItemModal;
+      const modalInstance = Modal.getInstance(modalElement);
+      if (modalInstance) {
+        modalInstance.hide();
+      } else {
+        const newModalInstance = new Modal(modalElement);
+        newModalInstance.hide();
+      }
+
+      // 移除任何殘留的 backdrop
+      const backdrops = document.querySelectorAll('.modal-backdrop');
+      backdrops.forEach(backdrop => backdrop.parentNode.removeChild(backdrop));
     },
   },
   // beforeUnmount() {
@@ -425,4 +482,14 @@ label {
     margin-right: -40px;
   }
 }
+/* 彈出視窗區域 */
+.modal-body {
+  display: flex;
+  justify-content: center;
+}
+.modal-footer {
+  display: flex;
+  justify-content: center;
+}
+
 </style>

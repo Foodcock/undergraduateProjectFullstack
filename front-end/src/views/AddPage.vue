@@ -5,7 +5,6 @@
       @submit.prevent="getCurrentLocationAndHandleAddForm"
       enctype="multipart/form-data"
     >
-      <h1>新增頁面</h1>
       <div class="inputBox">
         <input
           type="file"
@@ -76,6 +75,7 @@
           <Marker :options="{ position: center }" />
         </GoogleMap>
       </div>
+
       <button class="button btn btn-outline-primary">定位後提交</button>
     </form>
   </div>
@@ -98,6 +98,7 @@ export default {
       storeName: "",
       file: null,
       storeAddress: "",
+      address: "",
       center: { lat: 40.689247, lng: -74.044502 },
     };
   },
@@ -138,8 +139,11 @@ export default {
           if (response.ok) {
             alert("新增成功");
             this.encrypt(formData);
+
+          // 發射事件給父組件，通知新增成功
+          this.$emit('add-success');
           } else {
-            alert("嘗試次數過多");
+            alert("嘗試次數過多，請等待後嘗試");
           }
         })
         .catch((error) => {
