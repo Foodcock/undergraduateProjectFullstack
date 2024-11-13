@@ -142,4 +142,17 @@ router.post('/role', async (request, response) => {
     }
 });
 
+router.post('/user', async (request, response) => {
+    const { email } = request.body;
+    const userDB = await User.findOne({ email });
+    if (userDB) {
+        response.json({
+            phoneNumber: userDB.phoneNumber,
+            name: userDB.name
+        });
+    } else {
+        response.status(400).send('User not found');
+    }
+});
+
 module.exports = router;

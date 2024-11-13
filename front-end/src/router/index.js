@@ -7,6 +7,7 @@ import PayPage from '../views/PayPage.vue'
 import RegisterPage from '../views/RegisterPage.vue'
 import StorePage from '../views/StorePage.vue'
 import MerchantPage from '../views/MerchantPage.vue'
+import MemberDetail from '../views/MemberDetail.vue'
 
 const routes = [
   {
@@ -42,9 +43,13 @@ const routes = [
     name: 'merchant',
     component: MerchantPage
   }, {
+    path: '/memberDetail',
+    name: 'memberDetail',
+    component: MemberDetail
+  }, {
     path: '/',
     redirect: '/home'
-  }, 
+  },
   // , {
   //   path: '/:pathMatch(.*)*',
   //   component: NotFoundPage

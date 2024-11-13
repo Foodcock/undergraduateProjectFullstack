@@ -48,9 +48,10 @@
                   登入
                 </router-link>
                 <a class="dropdown-item" @click="logout" v-if="isLogin">登出</a>
+                <a class="dropdown-item" @click="toMemberDetail">會員資料</a>
               </div>
             </li>
-            <li class="nav-item dropdown">
+            <!-- <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
                 data-bs-toggle="dropdown"
@@ -61,7 +62,7 @@
                 <a class="dropdown-item" href="#">繁體中文</a>
                 <a class="dropdown-item" href="#">ENG</a>
               </div>
-            </li>
+            </li> -->
             <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
@@ -111,6 +112,9 @@ export default {
         .catch((error) => {
           console.error("錯誤:", error);
         });
+    },
+    toMemberDetail(){
+      this.$router.push("memberDetail");
     },
   },
   created() {
