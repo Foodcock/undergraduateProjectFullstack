@@ -3,18 +3,12 @@
     <NavBar @update-search-query="handleSearchQuery" />
     <div class="main">
       <div class="datadisplay">
-        <div
-          class="row row-cols-md-2 row-cols-lg-5 row-cols-sm-1 g-2 g-lg-3 m-4"
-        >
+        <div class="row row-cols-md-2 row-cols-lg-5 row-cols-sm-1 g-2 g-lg-3 m-4">
           <div class="col" v-for="item in filteredItems" :key="item.id">
             <div class="card mb-3 text-center" style="width: 300px">
               <div>
-                <img
-                  :src="getImageUrl(item.groceryName)"
-                  class="food-img"
-                  style="max-width: 64px"
-                  alt="item.groceryName"
-                />
+                <img :src="getImageUrl(item.groceryName)" class="food-img" style="max-width: 64px"
+                  alt="item.groceryName" />
               </div>
               <div class="item">
                 <p>商店名稱: {{ item.storeName }}</p>

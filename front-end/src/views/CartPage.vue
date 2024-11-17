@@ -1,11 +1,7 @@
 <template>
   <div class="body">
     <div id="grocery-list">
-      <div
-        v-for="item in groceries"
-        :key="item.groceryName"
-        class="grocery-item"
-      >
+      <div v-for="item in groceries" :key="item.groceryName" class="grocery-item">
         <img :src="getImageUrl(item.groceryName)" alt="商品圖片" />
         <h2>商品名稱: {{ item.groceryName }}</h2>
         <p>店名: {{ item.storeName }}</p>

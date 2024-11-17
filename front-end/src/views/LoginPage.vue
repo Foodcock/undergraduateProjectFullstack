@@ -7,18 +7,10 @@
           <input type="text" placeholder="Email" v-model="email" />
         </div>
         <div class="inputBox">
-          <input
-            :type="passwordVisible ? 'text' : 'password'"
-            placeholder="Password"
-            id="password"
-            v-model="password"
-          />
-          <i
-            :class="
-              passwordVisible ? 'bx bx-show eye-icon' : 'bx bx-hide eye-icon'
-            "
-            @click="showPassword"
-          ></i>
+          <input :type="passwordVisible ? 'text' : 'password'" placeholder="Password" id="password"
+            v-model="password" />
+          <i :class="passwordVisible ? 'bx bx-show eye-icon' : 'bx bx-hide eye-icon'
+            " @click="showPassword"></i>
         </div>
         <button type="submit" class="button">Login</button>
         <div class="registerLink">
@@ -28,21 +20,11 @@
       <div class="other-login">
         <button id="loginByGoogle" @click="loginByGoogle" class="button">
           Google
-          <img
-            src="../assets/google.png"
-            class="google-icon"
-            alt="..."
-            style="max-width: 28px"
-          />
+          <img src="../assets/google.png" class="google-icon" alt="..." style="max-width: 28px" />
         </button>
         <button id="loginBygithub" @click="loginByGithub" class="button">
           GitHub
-          <img
-            src="../assets/github.png"
-            class="github-icon"
-            alt="..."
-            style="max-width: 28px"
-          />
+          <img src="../assets/github.png" class="github-icon" alt="..." style="max-width: 28px" />
         </button>
       </div>
     </div>
@@ -79,13 +61,7 @@ export default {
             localStorage.setItem("isLogin", JSON.stringify(true));
             localStorage.setItem("userEmail", this.email);
             const role = await this.getRole(this.email);
-            if (role == "user") {
-              localStorage.setItem("role", "user");
-              window.location.href = "home";
-            } else if (role == "merchant") {
-              localStorage.setItem("role", "merchant");
-              window.location.href = "merchant";
-            }
+            this.setRole(role);
           } else if (response.status === 429) {
             alert("嘗試次數過多!");
           } else {
@@ -96,6 +72,15 @@ export default {
         .catch((error) => {
           console.error("錯誤:", error);
         });
+    },
+    setRole(role) {
+      if (role == "user") {
+        localStorage.setItem("role", "user");
+        window.location.href = "home";
+      } else if (role == "merchant") {
+        localStorage.setItem("role", "merchant");
+        window.location.href = "merchant";
+      }
     },
     async getRole(email) {
       try {
@@ -255,6 +240,5 @@ export default {
 .google-icon,
 .github-icon {
   position: absolute;
-  right: 50px;
-}
+  right: 50px;}
 </style>

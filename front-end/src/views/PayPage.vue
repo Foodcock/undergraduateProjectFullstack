@@ -19,11 +19,7 @@
 
     <div>
       <h2>購買商品</h2>
-      <div
-        v-for="item in groceries"
-        :key="item.groceryName"
-        class="grocery-item"
-      >
+      <div v-for="item in groceries" :key="item.groceryName" class="grocery-item">
         <h3>商品名稱: {{ item.groceryName }}</h3>
         <img :src="getImageUrl(item.groceryName)" alt="商品圖片" />
         <p>店名: {{ item.storeName }}</p>
@@ -41,19 +37,11 @@
     <div>
       <div>
         <label>
-          <input
-            type="radio"
-            v-model="deliveryOptions.deliveryType"
-            value="delivery"
-          />
+          <input type="radio" v-model="deliveryOptions.deliveryType" value="delivery" />
           外送
         </label>
         <label>
-          <input
-            type="radio"
-            v-model="deliveryOptions.deliveryType"
-            value="pickup"
-          />
+          <input type="radio" v-model="deliveryOptions.deliveryType" value="pickup" />
           自取
         </label>
       </div>
@@ -266,7 +254,7 @@ input[type="radio"] {
   margin-right: 5px;
 }
 
-input[type="radio"] + label {
+input[type="radio"]+label {
   margin-right: 15px;
 }
 </style>

@@ -21,6 +21,7 @@ export default {
   max-width: 800px;
   min-height: 100vh;
 }
+
 /* 
 button {
   background-color: black;

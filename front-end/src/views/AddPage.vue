@@ -1,81 +1,35 @@
 <template>
   <div class="body">
-    <form
-      id="addForm"
-      @submit.prevent="handleAddForm"
-      enctype="multipart/form-data"
-    >
+    <form id="addForm" @submit.prevent="handleAddForm" enctype="multipart/form-data">
       <div class="inputBox">
-        <input
-          type="file"
-          class="form-control"
-          name="file"
-          @change="handleFileUpload"
-          required
-        />
+        <input type="file" class="form-control" name="file" @change="handleFileUpload" required />
       </div>
 
       <div class="inputBox">
-        <input
-          type="text"
-          class="form-control"
-          id="groceryName"
-          v-model="groceryName"
-          placeholder="商品名稱"
-        />
+        <input type="text" class="form-control" id="groceryName" v-model="groceryName" placeholder="商品名稱" />
       </div>
 
       <div class="inputBox">
-        <input
-          type="text"
-          class="form-control"
-          id="originalPrice"
-          v-model="originalPrice"
-          placeholder="原價格"
-        />
+        <input type="text" class="form-control" id="originalPrice" v-model="originalPrice" placeholder="原價格" />
       </div>
 
       <div class="inputBox">
-        <input
-          type="text"
-          class="form-control"
-          id="discount"
-          v-model="discount"
-          placeholder="折扣百分比"
-        />
+        <input type="text" class="form-control" id="discount" v-model="discount" placeholder="折扣百分比" />
       </div>
 
       <div class="inputBox">
-        <input
-          type="text"
-          class="form-control"
-          id="expirationDate"
-          v-model="expirationDate"
-          placeholder="賞味期限"
-        />
+        <input type="text" class="form-control" id="expirationDate" v-model="expirationDate" placeholder="賞味期限" />
       </div>
 
       <div class="inputBox">
-        <input
-          type="text"
-          class="form-control"
-          id="storeName"
-          v-model="storeName"
-          placeholder="商店名稱"
-        />
+        <input type="text" class="form-control" id="storeName" v-model="storeName" placeholder="商店名稱" />
       </div>
 
       <div class="inputBox">
-        <input
-          type="text"
-          class="form-control"
-          id="storeAddress"
-          v-model="storeAddress"
-          placeholder="商店地址"
-        />
+        <input type="text" class="form-control" id="storeAddress" v-model="storeAddress" placeholder="商店地址" />
       </div>
 
-      <div >
+      <div>
         <button type="button" id="addressBtn" @click="getCurrentLocation" class="button btn btn-outline-primary">
           獲取當前地址
         </button>
@@ -113,20 +67,20 @@ export default {
     handleAddForm() {
       let formData = {};
       this.getImageUrl()
-      .then((imageUrl) => {
+        .then((imageUrl) => {
           formData = {
             groceryName: this.groceryName,
             originalPrice: this.originalPrice,
             discount: this.discount,
             discountedPrice:
-            (this.originalPrice * parseFloat(this.discount)) / 100,
+              (this.originalPrice * parseFloat(this.discount)) / 100,
             expirationDate: this.expirationDate,
             storeName: this.storeName,
             storeAddress: this.storeAddress,
             imageUrl: imageUrl,
             addedBy: localStorage.getItem("userEmail"),
           };
-          
+
           return fetch("/db/items", {
             method: "POST",
             headers: {
@@ -139,7 +93,7 @@ export default {
           if (response.ok) {
             alert("新增成功");
             this.encrypt(formData);
-            
+
             // 發射事件給父組件，通知新增成功
             this.$emit('add-success');
           } else {
@@ -149,15 +103,15 @@ export default {
         .catch((error) => {
           console.error("錯誤:", error);
         });
-      },
-      getImageUrl() {
-        const formData = new FormData();
-        formData.append("file", this.file);
-        
-        return fetch("/imgur/upload", {
-          method: "POST",
-          body: formData,
-        })
+    },
+    getImageUrl() {
+      const formData = new FormData();
+      formData.append("file", this.file);
+
+      return fetch("/imgur/upload", {
+        method: "POST",
+        body: formData,
+      })
         .then((response) => {
           if (response.ok) {
             return response.json();
@@ -173,17 +127,17 @@ export default {
           console.error("錯誤:", error);
           throw error;
         });
-      },
-      encrypt(plaintext) {
-        const socket = new WebSocket("ws://localhost:8000");
-        
-        fetch("/crypto/encrypt", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ plaintext: plaintext }),
-        })
+    },
+    encrypt(plaintext) {
+      const socket = new WebSocket("ws://localhost:8000");
+
+      fetch("/crypto/encrypt", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ plaintext: plaintext }),
+      })
         .then((response) => response.json())
         .then((data) => {
           console.log("加密完成");
@@ -193,65 +147,65 @@ export default {
         .catch((error) => {
           console.error("Error:", error);
         });
-      },
-      getCurrentLocation() {
-        alert('獲取當前地理位置')
-        // 獲取當前地理位置
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
+    },
+    getCurrentLocation() {
+      alert('獲取當前地理位置')
+      // 獲取當前地理位置
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
           (position) => {
             this.center = {
               lat: position.coords.latitude,
               lng: position.coords.longitude,
             };
-            
+
             // 使用 Google Geocoding API 將經緯度轉換為地址
             this.getGeocode(this.center.lat, this.center.lng)
-            .then((address) => {
-              this.storeAddress = address;
-              console.log(this.storeAddress);
+              .then((address) => {
+                this.storeAddress = address;
+                console.log(this.storeAddress);
               })
               .catch((error) => {
                 console.error("Geocoding 失敗:", error);
               });
-            },
-            (error) => {
-              console.error("獲取當前位置失敗", error);
-              alert("無法獲取當前位置");
-            }
-          );
-        } else {
-          alert("瀏覽器不支援地理位置");
-        }
-      },
-      getGeocode(lat, lng) {
-        const geocoder = new window.google.maps.Geocoder();
-        const latlng = { lat: parseFloat(lat), lng: parseFloat(lng) };
-        
-        return new Promise((resolve, reject) => {
-          geocoder.geocode({ location: latlng }, (results, status) => {
-            if (status === "OK") {
-              if (results[0]) {
-                resolve(results[0].formatted_address); // 返回格式化的地址
-              } else {
-                reject("沒有找到結果");
-              }
-            } else {
-              reject("Geocoder 失敗，原因：" + status);
-            }
-          });
-        });
-      },
-      switchBtn(event) {
-        alert(event.target.id);
-        // if (event.target.id === "addressBtn") {
-        //   this.getCurrentLocation()
-        // }else{
-        //   this.handleAddForm()
-        // }
-      },
+          },
+          (error) => {
+            console.error("獲取當前位置失敗", error);
+            alert("無法獲取當前位置");
+          }
+        );
+      } else {
+        alert("瀏覽器不支援地理位置");
+      }
     },
-  };
+    getGeocode(lat, lng) {
+      const geocoder = new window.google.maps.Geocoder();
+      const latlng = { lat: parseFloat(lat), lng: parseFloat(lng) };
+
+      return new Promise((resolve, reject) => {
+        geocoder.geocode({ location: latlng }, (results, status) => {
+          if (status === "OK") {
+            if (results[0]) {
+              resolve(results[0].formatted_address); // 返回格式化的地址
+            } else {
+              reject("沒有找到結果");
+            }
+          } else {
+            reject("Geocoder 失敗，原因：" + status);
+          }
+        });
+      });
+    },
+    switchBtn(event) {
+      alert(event.target.id);
+      // if (event.target.id === "addressBtn") {
+      //   this.getCurrentLocation()
+      // }else{
+      //   this.handleAddForm()
+      // }
+    },
+  },
+};
 </script>
 
 <style scoped>

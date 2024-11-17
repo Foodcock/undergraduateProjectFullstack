@@ -148,7 +148,8 @@ router.post('/user', async (request, response) => {
     if (userDB) {
         response.json({
             phoneNumber: userDB.phoneNumber,
-            name: userDB.name
+            name: userDB.name,
+            verified: userDB.verified,
         });
     } else {
         response.status(400).send('User not found');

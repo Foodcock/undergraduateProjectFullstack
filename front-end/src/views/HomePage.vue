@@ -7,42 +7,20 @@
           <h4 class="side-title">小道消息</h4>
           <div class="col-lg-auto right">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
-              <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navDropdown"
-              >
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navDropdown">
                 <span class="navbar-toggler-icon"></span>
               </button>
               <div class="collapse navbar-collapse" id="navDropdown">
                 <ul class="navbar-nav">
                   <li class="nav-item dropdown">
-                    <a
-                      class="nav-link dropdown-toggle"
-                      data-bs-toggle="dropdown"
-                      href="#"
-                    >
-                      <i class="fa-solid fa-sort"></i
-                      ><span id="sortLabel">排序</span>
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">
+                      <i class="fa-solid fa-sort"></i><span id="sortLabel">排序</span>
                     </a>
                     <div class="dropdown-menu">
-                      <a
-                        class="dropdown-item"
-                        onclick="sortByPrice('highToLow')"
-                        >價格(低至高)</a
-                      >
-                      <a class="dropdown-item" onclick="sortByPrice()"
-                        >價格(高至低)</a
-                      >
-                      <a
-                        class="dropdown-item"
-                        onclick="sortByDistance('highToLow')"
-                        >距離(近到遠)</a
-                      >
-                      <a class="dropdown-item" onclick="sortByDistance()"
-                        >距離(遠到近)</a
-                      >
+                      <a class="dropdown-item" onclick="sortByPrice('highToLow')">價格(低至高)</a>
+                      <a class="dropdown-item" onclick="sortByPrice()">價格(高至低)</a>
+                      <a class="dropdown-item" onclick="sortByDistance('highToLow')">距離(近到遠)</a>
+                      <a class="dropdown-item" onclick="sortByDistance()">距離(遠到近)</a>
                     </div>
                   </li>
                 </ul>
@@ -51,20 +29,11 @@
           </div>
         </div>
         <div class="side-body">
-          <div
-            v-for="(card, index) in cards"
-            :key="index"
-            class="card mb-3"
-            @click="redirectToDetail(card)"
-            style="max-width: 600px"
-          >
+          <div v-for="(card, index) in cards" :key="index" class="card mb-3" @click="redirectToDetail(card)"
+            style="max-width: 600px">
             <div class="row g-0">
               <div class="pic col-md-4">
-                <img
-                  :src="card.imageUrl"
-                  class="img-fluid rounded-start"
-                  alt="Uploaded Image"
-                />
+                <img :src="card.imageUrl" class="img-fluid rounded-start" alt="Uploaded Image" />
               </div>
               <div class="col-md-8">
                 <div class="card-body">
@@ -73,7 +42,7 @@
                   <p class="card-footer">
                     <small class="text-body-secondary">{{
                       card.storeAddress
-                    }}</small>
+                      }}</small>
                   </p>
                 </div>
               </div>
@@ -81,46 +50,27 @@
           </div>
         </div>
         <div class="side-footer">
-          <button 
-            id="toAddPageButton"
-            data-bs-toggle="modal"
-            data-bs-target="#addItemModal"
-          >
+          <button id="toAddPageButton" data-bs-toggle="modal" data-bs-target="#addItemModal">
             <i class="fa-solid fa-plus"></i>
           </button>
         </div>
       </aside>
 
       <!-- AddPage Modal -->
-      <div
-        class="modal fade"
-        id="addItemModal"
-        tabindex="-1"
-        aria-labelledby="addItemModalLabel"
-        aria-hidden="true"
-        ref="addItemModal"
-      >
+      <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true"
+        ref="addItemModal">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <h2 class="modal-title" id="addItemModalLabel">新增商品</h2>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <!-- 引入 AddPage 的表單 -->
               <AddPage @add-success="handleAddSuccess" />
             </div>
             <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                 關閉
               </button>
             </div>
@@ -130,13 +80,8 @@
       <section class="secondary-content wrapper-content">
         <h2 class="secondary__title section__title"></h2>
         <div class="row mx-4 pt-6 ps-4">
-          <div
-            v-for="store in filteredStores"
-            :key="store.name"
-            class="wrapper-work"
-            :data-store="store.name"
-            @click="redirectToStore(store.name)"
-          >
+          <div v-for="store in filteredStores" :key="store.name" class="wrapper-work" :data-store="store.name"
+            @click="redirectToStore(store.name)">
             <img :src="store.image" :alt="store.name" />
             <h3 class="work_title">{{ store.name }}</h3>
           </div>
@@ -252,8 +197,8 @@ export default {
     },
   },
   components: {
-    NavBar,
     AddPage,
+    NavBar,
   },
   methods: {
     redirectToStore(storeName) {
@@ -318,6 +263,7 @@ export default {
   letter-spacing: normal;
   background-color: rgba(144, 189, 231, 0.479);
 }
+
 a {
   text-decoration: none;
 }
@@ -326,6 +272,7 @@ a {
 main {
   display: flex;
 }
+
 /* 左邊的po文欄 */
 .side-menu {
   position: sticky;
@@ -341,6 +288,7 @@ main {
   /* overflow: visible;
   transition: 0.5s; */
 }
+
 label {
   width: 20px;
   height: 80px;
@@ -356,6 +304,7 @@ label {
   border-radius: 0 5px 5px 0;
   box-shadow: 5px 0 5px rgba(23, 23, 54, 0.6);
 }
+
 /* #side-menu-active:checked + .side-menu {
   transform: translateX(-100%);
   transition: 0.5s;
@@ -378,8 +327,9 @@ label {
   align-items: center;
   float: left;
 }
-.side-title {
-}
+
+.side-title {}
+
 /* 每個品項的設定 */
 .side-body {
   display: flex;
@@ -394,6 +344,7 @@ label {
   margin-right: 10px;
   overflow: auto;
 }
+
 .side-footer {
   padding: 10px;
   margin-top: 10px;
@@ -401,40 +352,50 @@ label {
   justify-content: center;
   align-items: center;
 }
+
 .side-footer button {
   border-radius: 10px;
   height: 150%;
   padding-left: 15px;
   padding-right: 15px;
 }
+
 .side-footer button:hover {
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.9);
   transition: 0.2s;
 }
+
 .card {
   border: none !important;
   padding: 3px;
 }
+
 .card .title {
   color: #444444;
 }
+
 .card .text {
   color: #444444;
 }
+
 .card .pic {
   height: 100%;
 }
+
 .card .pic img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
 .card .card-body {
   background-color: #f1f6fa !important;
 }
+
 .card-footer {
   margin-bottom: -10px;
 }
+
 .card-footer p {
   margin-bottom: 0;
 }
@@ -449,11 +410,13 @@ label {
   justify-content: center;
   align-items: center;
 }
+
 .work_title {
   font-size: 24px;
   margin-top: 20px;
   margin-bottom: 10px;
 }
+
 .wrapper-work {
   width: min-content;
   border-radius: 10px;
@@ -462,34 +425,40 @@ label {
   padding: 5px;
   margin: 1em 1em 1em 1em;
 }
+
 .wrapper-work:hover {
   box-shadow: 5px 8px 2px rgba(0, 0, 0, 0.7);
   transition: 0.5s;
 }
+
 .wrapper-work img {
   width: 236px;
   height: 192px;
 }
+
 .wrapper-work h3 {
   text-align: center;
 }
+
 @media screen and (min-width: 320px) and (max-width: 768px) {
   .logo {
     font-size: small;
     margin-left: -20px;
   }
+
   .header-content .navbar {
     margin-right: -40px;
   }
 }
+
 /* 彈出視窗區域 */
 .modal-body {
   display: flex;
   justify-content: center;
 }
+
 .modal-footer {
   display: flex;
   justify-content: center;
 }
-
 </style>

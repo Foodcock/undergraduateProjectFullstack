@@ -11,34 +11,17 @@
           <input type="text" id="name" placeholder="Name" v-model="name" />
         </div>
         <div class="inputBox">
-          <input
-            type="text"
-            id="phoneNumber"
-            placeholder="PhoneNumber"
-            v-model="phoneNumber"
-          />
+          <input type="text" id="phoneNumber" placeholder="PhoneNumber" v-model="phoneNumber" />
         </div>
         <div class="inputBox">
-          <input
-            :type="passwordVisible ? 'text' : 'password'"
-            id="password"
-            placeholder="Create Password"
-            v-model="password"
-          />
+          <input :type="passwordVisible ? 'text' : 'password'" id="password" placeholder="Create Password"
+            v-model="password" />
         </div>
         <div class="inputBox">
-          <input
-            :type="passwordVisible ? 'text' : 'password'"
-            id="comfirmPassword"
-            placeholder="Comfirm Password"
-            v-model="comfirmPassword"
-          />
-          <i
-            :class="
-              passwordVisible ? 'bx bx-show eye-icon' : 'bx bx-hide eye-icon'
-            "
-            @click="showPassword"
-          ></i>
+          <input :type="passwordVisible ? 'text' : 'password'" id="comfirmPassword" placeholder="Comfirm Password"
+            v-model="comfirmPassword" />
+          <i :class="passwordVisible ? 'bx bx-show eye-icon' : 'bx bx-hide eye-icon'
+            " @click="showPassword"></i>
         </div>
         <div>
           <input type="checkbox" id="isMerchant" v-model="isMerchant" />
