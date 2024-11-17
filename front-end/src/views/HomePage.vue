@@ -42,7 +42,7 @@
                   <p class="card-footer">
                     <small class="text-body-secondary">{{
                       card.storeAddress
-                      }}</small>
+                    }}</small>
                   </p>
                 </div>
               </div>
@@ -380,12 +380,17 @@ label {
 
 .card .pic {
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .card .pic img {
   width: 100%;
-  height: 100%;
+  height: auto;
+  max-height: 150px;
   object-fit: cover;
+  border-radius: 5px;
 }
 
 .card .card-body {

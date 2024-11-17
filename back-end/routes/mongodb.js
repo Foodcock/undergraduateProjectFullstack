@@ -52,6 +52,20 @@ router.get('/userItem/:price/:name/:address', async (req, res) => {
     }
 });
 
+router.get('/better/:price/:name', async (req, res) => {
+    try {
+        const grocery = await storeGrocery.find({
+            groceryName: req.params.name,
+        });
+        const better = grocery.filter((item) => {
+            return item.discountedPrice < Number(req.params.price);
+        });
+        res.json(better);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 //商家的資料(網站右邊)
 router.get('/items/:name', async (req, res) => {
     try {
