@@ -2,27 +2,73 @@
   <div class="body">
     <NavBar @update-search-query="handleSearchQuery" />
     <div class="main">
-      <div class="datadisplay">
-        <div class="row row-cols-md-2 row-cols-lg-5 row-cols-sm-1 g-2 g-lg-3 m-4">
-          <div class="col" v-for="item in filteredItems" :key="item.id">
-            <div class="card mb-3 text-center" style="width: 300px">
-              <div>
-                <img :src="getImageUrl(item.groceryName)" class="food-img" style="max-width: 64px"
-                  alt="item.groceryName" />
-              </div>
-              <div class="item">
-                <p>商店名稱: {{ item.storeName }}</p>
-                <p>商店地址: {{ item.storeAddress }}</p>
-                <p>商品名: {{ item.groceryName }}</p>
-                <p>折扣價: {{ item.discountedPrice }}</p>
-                <p>過期日期: {{ item.expirationDate }}</p>
-                <button class="btn btn-primary" @click="addToCart(item)">
-                  加入購物車
-                </button>
+      <div class="dataDisplay">
+        <div class="accordion" id="accordionPanel">
+          <div class="accordion-item" v-for="(storeItems, storeName, index) in groupedItems" :key="storeName">
+            <h2 class="accordion-header" :id="'panels-heading-' + index">
+              <button
+                class="accordion-button text-dark fs-5 fw-bold"
+                type="button"
+                data-bs-toggle="collapse"
+                :data-bs-target="'#panels-collapse-' + index"
+                aria-expanded="true"
+                :aria-controls="'panels-collapse-' + index"
+              >
+                {{ storeName }}
+              </button>
+            </h2>
+            <div
+              :id="'panels-collapse-' + index"
+              class="accordion-collapse collapse"
+              :aria-labelledby="'panels-heading-' + index"
+            >
+              <div class="accordion-body bg-light">
+                <div class="row row-cols-md-2 row-cols-lg-5 row-cols-sm-1 g-2 g-lg-3 m-4">
+                  <div class="col" v-for="item in storeItems" :key="item.id">
+                    <div class="card mb-3 text-center" style="width: 300px">
+                      <div>
+                        <img :src="getImageUrl(item.groceryName)" class="food-img" style="max-width: 64px" alt="item.groceryName" />
+                      </div>
+                      <div class="item">
+                        <h4>折扣價: {{ item.discountedPrice }}</h4>
+                        <p>商店名稱: {{ item.storeName }}</p>
+                        <p>商店地址: {{ item.storeAddress }}</p>
+                        <p>商品名: {{ item.groceryName }}</p>
+                        <p>過期日期: {{ item.expirationDate }}</p>
+                        <button class="btn btn-primary" @click="addToCart(item)">
+                          加入購物車
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <!-- <div v-for="(storeItems, storeName) in groupedItems" :key="storeName">
+          <p class="flex h-12 items-center justify-between px-4 bg-secondary"><span class="text-lg font-bold">{{ storeName }}</span></p>
+          <div class="row row-cols-md-2 row-cols-lg-5 row-cols-sm-1 g-2 g-lg-3 m-4">
+            <div class="col"  v-for="item in storeItems" :key="item.id">
+              <div class="card mb-3 text-center" style="width: 300px">
+                <div>
+                  <img :src="getImageUrl(item.groceryName)" class="food-img" style="max-width: 64px"
+                    alt="item.groceryName" />
+                </div>
+                <div class="item">
+                  <p>商店名稱: {{ item.storeName }}</p>
+                  <p>商店地址: {{ item.storeAddress }}</p>
+                  <p>商品名: {{ item.groceryName }}</p>
+                  <p>折扣價: {{ item.discountedPrice }}</p>
+                  <p>過期日期: {{ item.expirationDate }}</p>
+                  <button class="btn btn-primary" @click="addToCart(item)">
+                    加入購物車
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -50,6 +96,15 @@ export default {
       return this.items.filter((item) =>
         JSON.stringify(item).includes(this.searchQuery)
       );
+    },
+    groupedItems() {
+      return this.filteredItems.reduce((groups, item) => {
+        if (!groups[item.storeName]) {
+          groups[item.storeName] = [];
+        }
+        groups[item.storeName].push(item);
+        return groups;
+      }, {});
     },
   },
   components: {
@@ -133,8 +188,9 @@ export default {
 
 /* 資料呈現方式 */
 .dataDisplay {
+  width: 100vw;
   margin: 0px;
-  padding: 10px 0px 10px 0px;
+  padding: 0px 0px 10px 0px;
   display: flex;
   flex-direction: column;
   justify-content: center;
