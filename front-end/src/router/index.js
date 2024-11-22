@@ -8,6 +8,7 @@ import RegisterPage from '../views/RegisterPage.vue'
 import StorePage from '../views/StorePage.vue'
 import MerchantPage from '../views/MerchantPage.vue'
 import MemberDetail from '../views/MemberDetail.vue'
+import DetailPage from '../views/DetailPage.vue'
 
 const routes = [
   {
@@ -46,6 +47,10 @@ const routes = [
     path: '/memberDetail',
     name: 'memberDetail',
     component: MemberDetail
+  }, {
+    path: '/details',
+    name: 'detail',
+    component: DetailPage
   }, {
     path: '/',
     redirect: '/home'

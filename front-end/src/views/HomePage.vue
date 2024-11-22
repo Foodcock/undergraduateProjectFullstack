@@ -213,9 +213,15 @@ export default {
       this.$router.push("/add");
     },
     redirectToDetail(card) {
-      console.log("Redirect to detail page with:", card);
-
-      this.$router.push("/details");
+      this.$router.push({
+        path: `/details`,
+        query: {
+          imageUrl: card.imageUrl,
+          groceryName: card.groceryName,
+          discountedPrice: card.discountedPrice,
+          storeAddress: card.storeAddress,
+        }
+      });
     },
     decrypt(input) {
       fetch("/crypto/decrypt", {
