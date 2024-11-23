@@ -9,7 +9,7 @@
               <button
                 class="accordion-button text-dark fs-5 fw-bold"
                 type="button"
-                data-bs-toggle="collapse"
+                :data-bs-toggle="'collapse'"
                 :data-bs-target="'#panels-collapse-' + index"
                 aria-expanded="true"
                 :aria-controls="'panels-collapse-' + index"
@@ -30,7 +30,7 @@
                         <img :src="getImageUrl(item.groceryName)" class="food-img" style="max-width: 64px" alt="item.groceryName" />
                       </div>
                       <div class="item">
-                        <h4>折扣價: {{ item.discountedPrice }}</h4>
+                        <h4>折扣價: {{ Math.floor(item.discountedPrice) }}</h4>
                         <p>商店名稱: {{ item.storeName }}</p>
                         <p>商店地址: {{ item.storeAddress }}</p>
                         <p>商品名: {{ item.groceryName }}</p>
@@ -175,15 +175,19 @@ export default {
 }
 
 .body {
+  position: relative;
   font-family: "Noto Sans", "Microsoft JhengHei";
   min-height: 100vh;
   background: rgba(144, 189, 231, 0.479);
   background-size: cover;
   background-position: center;
+  z-index: 0;
 }
 
 .main {
+  position: relative;
   display: flex;
+  z-index: -1;
 }
 
 /* 資料呈現方式 */
@@ -201,5 +205,21 @@ export default {
   margin: 3px;
   background-color: whitesmoke;
   border: 3px solid black;
+}
+
+.accordion-body {
+  background-color: rgba(144, 189, 231, 0.479); /* 設定和背景一致的顏色 */
+}
+
+.accordion-button {
+  background-color: rgba(144, 189, 231, 0.479); /* 確保按鈕背景色也一致 */
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: rgba(144, 189, 231, 0.479); /* 展開時按鈕背景色 */
+}
+
+.accordion-button:hover {
+  background-color: rgba(144, 189, 231, 0.6); /* 滑鼠移上去的效果 */
 }
 </style>
