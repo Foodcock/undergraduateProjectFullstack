@@ -31,7 +31,7 @@
 
       <div>
         <button type="button" id="addressBtn" @click="getCurrentLocation" class="button btn btn-outline-primary">
-          獲取當前地址
+          自動填入當前地址
         </button>
       </div>
 
@@ -91,9 +91,9 @@ export default {
         })
         .then((response) => {
           if (response.ok) {
-            alert("新增成功");
             this.encrypt(formData);
-
+            
+            alert("商品新增成功");
             // 發射事件給父組件，通知新增成功
             this.$emit('add-success');
           } else {
@@ -149,9 +149,8 @@ export default {
         });
     },
     getCurrentLocation() {
-      alert('獲取當前地理位置')
-      // 獲取當前地理位置
       if (navigator.geolocation) {
+        this.storeAddress = "地址獲取中...";
         navigator.geolocation.getCurrentPosition(
           (position) => {
             this.center = {
@@ -166,12 +165,29 @@ export default {
                 console.log(this.storeAddress);
               })
               .catch((error) => {
-                console.error("Geocoding 失敗:", error);
+                this.storeAddress = "";
+                console.error("經緯度轉地址失敗:", error);
               });
           },
           (error) => {
-            console.error("獲取當前位置失敗", error);
-            alert("無法獲取當前位置");
+            this.storeAddress = "";
+            switch (error.code) {
+              case error.PERMISSION_DENIED:
+                console.error("使用者拒絕了位置請求");
+                alert("請允許訪問位置以獲取正確的地點資訊");
+                break;
+              case error.POSITION_UNAVAILABLE:
+                console.error("無法獲取位置信息，可能是設備無法提供位置");
+                alert("無法獲取位置信息，請檢查設備或網絡");
+                break;
+              case error.TIMEOUT:
+                console.error("定位超時");
+                alert("定位超時，請稍後重試");
+                break;
+              default:
+                console.error("未知錯誤", error);
+                alert("發生未知錯誤，請稍後重試");
+            }
           }
         );
       } else {
@@ -195,14 +211,6 @@ export default {
           }
         });
       });
-    },
-    switchBtn(event) {
-      alert(event.target.id);
-      // if (event.target.id === "addressBtn") {
-      //   this.getCurrentLocation()
-      // }else{
-      //   this.handleAddForm()
-      // }
     },
   },
 };

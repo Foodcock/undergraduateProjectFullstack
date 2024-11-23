@@ -50,33 +50,39 @@
           </div>
         </div>
         <div class="side-footer">
-          <button id="toAddPageButton" data-bs-toggle="modal" data-bs-target="#addItemModal">
+          <!-- data-bs-toggle="modal" data-bs-target="#addItemModal" -->
+          <button id="toAddPageButton" @click="showAddPage = true">
             <i class="fa-solid fa-plus"></i>
           </button>
+
         </div>
       </aside>
 
+      
+      <!-- 背景遮罩 -->
+      <div v-if="showAddPage" class="modal-backdrop fade show"></div>
       <!-- AddPage Modal -->
-      <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true"
+      <div v-if="showAddPage" class="modal fade show" style="display: block;" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true"
         ref="addItemModal">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <h2 class="modal-title" id="addItemModalLabel">新增商品</h2>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close" @click="closeAddPage" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <!-- 引入 AddPage 的表單 -->
+               <!-- 引入 AddPage 的表單  -->
               <AddPage @add-success="handleAddSuccess" />
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              <button type="button" class="btn btn-secondary" @click="closeAddPage" data-bs-dismiss="modal">
                 關閉
               </button>
             </div>
           </div>
         </div>
       </div>
+      
       <section class="secondary-content wrapper-content">
         <h2 class="secondary__title section__title"></h2>
         <div class="row mx-4 pt-6 ps-4">
@@ -94,7 +100,7 @@
 <script>
 import NavBar from "../components/NavBar.vue";
 import AddPage from "./AddPage.vue";
-import { Modal } from 'bootstrap';
+// import { Modal } from 'bootstrap';
 
 export default {
   name: "HomePage",
@@ -157,6 +163,7 @@ export default {
         },
       ],
       socket: null,
+      showAddPage: false,
     };
   },
   mounted() {
@@ -233,19 +240,11 @@ export default {
           console.error("Error:", error);
         });
     },
+    closeAddPage() {
+      this.showAddPage = false; // 關閉模態框
+    },
     handleAddSuccess() {
-      const modalElement = this.$refs.addItemModal;
-      const modalInstance = Modal.getInstance(modalElement);
-      if (modalInstance) {
-        modalInstance.hide();
-      } else {
-        const newModalInstance = new Modal(modalElement);
-        newModalInstance.hide();
-      }
-
-      // 移除任何殘留的 backdrop
-      const backdrops = document.querySelectorAll('.modal-backdrop');
-      backdrops.forEach(backdrop => backdrop.parentNode.removeChild(backdrop));
+      this.closeAddPage(); // 新增成功後關閉模態框
     },
   },
   // beforeUnmount() {
