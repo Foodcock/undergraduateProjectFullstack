@@ -19,25 +19,34 @@
             </h2>
             <div
               :id="'panels-collapse-' + index"
-              class="accordion-collapse collapse"
+              class="accordion-collapse collapse show"
               :aria-labelledby="'panels-heading-' + index"
             >
               <div class="accordion-body bg-light">
-                <div class="row row-cols-md-2 row-cols-lg-5 row-cols-sm-1 g-2 g-lg-3 m-4">
+                <div class="row row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 g-2 g-lg-3">
                   <div class="col" v-for="item in storeItems" :key="item.id">
-                    <div class="card mb-3 text-center" style="width: 300px">
-                      <div>
-                        <img :src="getImageUrl(item.groceryName)" class="food-img" style="max-width: 64px" alt="item.groceryName" />
-                      </div>
-                      <div class="item">
-                        <h4>折扣價: {{ Math.floor(item.discountedPrice) }}</h4>
-                        <p>商店名稱: {{ item.storeName }}</p>
-                        <p>商店地址: {{ item.storeAddress }}</p>
-                        <p>商品名: {{ item.groceryName }}</p>
-                        <p>過期日期: {{ item.expirationDate }}</p>
-                        <button class="btn btn-primary" @click="addToCart(item)">
-                          加入購物車
-                        </button>
+                    <div class="card text-center" style="width: 400px">
+                      <div class="row g-0 d-flex align-items-center">
+                        <div class="col-md-5">
+                          <div class="card-body">
+                            <img :src="getImageUrl(item.groceryName)" class="food-img"  
+                            alt="item.groceryName" />
+                          </div>
+                          <div class="card-footer fw-bold">
+                            <p>商品名: {{ item.groceryName }}</p>
+                          </div>
+                        </div>
+                        <div class="col-md-7">
+                          <div class="item fw-bold">
+                            <h4 class="fw-bold">折扣價: {{ Math.floor(item.discountedPrice) }}</h4>
+                            <p>商店名稱: {{ item.storeName }}</p>
+                            <p>商店地址: {{ item.storeAddress }}</p>
+                            <p>過期日期: {{ item.expirationDate }}</p>
+                            <button class="btn btn-primary" @click="addToCart(item)">
+                              加入購物車
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -46,29 +55,6 @@
             </div>
           </div>
         </div>
-        <!-- <div v-for="(storeItems, storeName) in groupedItems" :key="storeName">
-          <p class="flex h-12 items-center justify-between px-4 bg-secondary"><span class="text-lg font-bold">{{ storeName }}</span></p>
-          <div class="row row-cols-md-2 row-cols-lg-5 row-cols-sm-1 g-2 g-lg-3 m-4">
-            <div class="col"  v-for="item in storeItems" :key="item.id">
-              <div class="card mb-3 text-center" style="width: 300px">
-                <div>
-                  <img :src="getImageUrl(item.groceryName)" class="food-img" style="max-width: 64px"
-                    alt="item.groceryName" />
-                </div>
-                <div class="item">
-                  <p>商店名稱: {{ item.storeName }}</p>
-                  <p>商店地址: {{ item.storeAddress }}</p>
-                  <p>商品名: {{ item.groceryName }}</p>
-                  <p>折扣價: {{ item.discountedPrice }}</p>
-                  <p>過期日期: {{ item.expirationDate }}</p>
-                  <button class="btn btn-primary" @click="addToCart(item)">
-                    加入購物車
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
       </div>
     </div>
   </div>
@@ -201,10 +187,10 @@ export default {
 }
 
 .item {
+  font-family: "Noto Sans", "Microsoft JhengHei";
   min-width: auto;
   margin: 3px;
   background-color: whitesmoke;
-  border: 3px solid black;
 }
 
 .accordion-body {
