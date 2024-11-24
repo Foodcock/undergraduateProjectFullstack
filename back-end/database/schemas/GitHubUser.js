@@ -8,6 +8,9 @@ const GitHubUserSchema = new mongoose.Schema({
   role: {
     type: String,
   },
+  email: {
+    type: String,
+  },
   createdAt: {
     type: mongoose.SchemaTypes.Date,
     required: true,

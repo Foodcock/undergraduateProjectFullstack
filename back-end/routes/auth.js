@@ -35,13 +35,18 @@ async function registerWithGoogle(oauthUser) {
         return { failure };
     }
 
+    const name = oauthUser.displayName;
+    const email = oauthUser.emails[0].value;
+
     const googelUser = new GoogleUser({
         accountId: oauthUser.id,
-        name: oauthUser.displayName,
+        name: name,
         provider: oauthUser.provider,
+        email: email,
         role: "user",
     });
     await googelUser.save();
+    await User.create({ password: "123", email, name, phoneNumber: "0977888999", });
     const success = {
         message: 'User Registered.',
     };
@@ -71,7 +76,8 @@ router.get('/google/callback', (req, res, next) => {
     } else {
         console.log('Registering new Google user..');
     }
-    res.redirect('/homePage.html');
+    const userEmail = req.user.emails[0].value;
+    res.redirect(`http://localhost:8080/home?userEmail=${encodeURIComponent(userEmail)}`);
 });
 
 // ----------------github-------------------
@@ -102,6 +108,7 @@ async function registerWithGitHub(oauthUser) {
     const gitHubUser = new GitHubUser({
         name: oauthUser.username,
         provider: oauthUser.provider,
+        email: oauthUser.emails[0].value,
         role: "user",
     });
     await gitHubUser.save();
@@ -134,7 +141,7 @@ router.get('/github/callback', (req, res, next) => {
     } else {
         console.log('Registering new GitHub user..');
     }
-    res.redirect('/homePage.html');
+    res.redirect('http://localhost:8080/home');
 });
 
 // ----------------local-------------------
