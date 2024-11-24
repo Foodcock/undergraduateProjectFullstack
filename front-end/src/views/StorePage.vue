@@ -26,11 +26,10 @@
                 <div class="row row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 g-2 g-lg-3">
                   <div class="col" v-for="item in storeItems" :key="item.id">
                     <div class="card text-center" style="width: 400px">
-                      <div class="row g-0 d-flex align-items-center">
-                        <div class="col-md-5">
+                      <div class="row g-0">
+                        <div class="col-md-5 d-flex flex-column">
                           <div class="card-body">
-                            <img :src="getImageUrl(item.groceryName)" class="food-img"  
-                            alt="item.groceryName" />
+                            <img :src="getImageUrl(item.groceryName)" class="food-img" alt="item.groceryName" />
                           </div>
                           <div class="card-footer fw-bold">
                             <p>商品名: {{ item.groceryName }}</p>
@@ -179,8 +178,6 @@ export default {
 /* 資料呈現方式 */
 .dataDisplay {
   width: 100vw;
-  margin: 0px;
-  padding: 0px 0px 10px 0px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -191,6 +188,12 @@ export default {
   min-width: auto;
   margin: 3px;
   background-color: whitesmoke;
+}
+
+.card-body {
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center;     /* 垂直居中 */
 }
 
 .accordion-body {
