@@ -63,10 +63,10 @@ export default {
   },
   methods: {
     toPayPage() {
-      window.location.href = "pay";
+      this.$router.push("/pay");
     },
     toHomePage() {
-      window.location.href = "home";
+      this.$router.push("/home");
     },
     removeItem(index) {
       this.groceries.splice(index, 1);

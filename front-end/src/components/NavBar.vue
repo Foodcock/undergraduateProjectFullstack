@@ -67,7 +67,7 @@ export default {
             localStorage.setItem("role", "quest");
             localStorage.setItem("userEmail", "");
             this.isLogin = JSON.parse(localStorage.getItem("isLogin"));
-            this.$router.push("login");
+            this.$router.push("/login");
           } else {
             console.log("錯誤");
           }
@@ -77,7 +77,7 @@ export default {
         });
     },
     toMemberDetail() {
-      this.$router.push("memberDetail");
+      this.$router.push("/memberDetail");
     },
   },
   created() {

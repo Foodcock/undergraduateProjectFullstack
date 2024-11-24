@@ -91,7 +91,7 @@ export default {
             alert("註冊成功");
             this.password = "";
             this.comfirmPassword = "";
-            window.location.href = "login";
+            this.$router.push("/login");
           } else {
             alert("使用者已存在");
             console.log("註冊失败");

@@ -76,10 +76,10 @@ export default {
     setRole(role) {
       if (role == "user") {
         localStorage.setItem("role", "user");
-        window.location.href = "home";
+        this.$router.push("/home");
       } else if (role == "merchant") {
         localStorage.setItem("role", "merchant");
-        window.location.href = "merchant";
+        this.$router.push("/merchant");
       }
     },
     async getRole(email) {
@@ -240,5 +240,6 @@ export default {
 .google-icon,
 .github-icon {
   position: absolute;
-  right: 50px;}
+  right: 50px;
+}
 </style>
