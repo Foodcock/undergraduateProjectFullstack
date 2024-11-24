@@ -17,10 +17,10 @@
                       <i class="fa-solid fa-sort"></i><span id="sortLabel">排序</span>
                     </a>
                     <div class="dropdown-menu">
-                      <a class="dropdown-item" onclick="sortByPrice('highToLow')">價格(低至高)</a>
-                      <a class="dropdown-item" onclick="sortByPrice()">價格(高至低)</a>
-                      <a class="dropdown-item" onclick="sortByDistance('highToLow')">距離(近到遠)</a>
-                      <a class="dropdown-item" onclick="sortByDistance()">距離(遠到近)</a>
+                      <a class="dropdown-item" @click="sortByPrice()">價格(低至高)</a>
+                      <a class="dropdown-item" @click="sortByPrice('highToLow')">價格(高至低)</a>
+                      <a class="dropdown-item" @click="sortByDistance('highToLow')">距離(近到遠)</a>
+                      <a class="dropdown-item" @click="sortByDistance()">距離(遠到近)</a>
                     </div>
                   </li>
                 </ul>
@@ -58,20 +58,21 @@
         </div>
       </aside>
 
-      
+
       <!-- 背景遮罩 -->
       <div v-if="showAddPage" class="modal-backdrop fade show"></div>
       <!-- AddPage Modal -->
-      <div v-if="showAddPage" class="modal fade show" style="display: block;" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true"
-        ref="addItemModal">
+      <div v-if="showAddPage" class="modal fade show" style="display: block;" id="addItemModal" tabindex="-1"
+        aria-labelledby="addItemModalLabel" aria-hidden="true" ref="addItemModal">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <h2 class="modal-title" id="addItemModalLabel">新增商品</h2>
-              <button type="button" class="btn-close" @click="closeAddPage" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" class="btn-close" @click="closeAddPage" data-bs-dismiss="modal"
+                aria-label="Close"></button>
             </div>
             <div class="modal-body">
-               <!-- 引入 AddPage 的表單  -->
+              <!-- 引入 AddPage 的表單  -->
               <AddPage @add-success="handleAddSuccess" />
             </div>
             <div class="modal-footer">
@@ -82,7 +83,7 @@
           </div>
         </div>
       </div>
-      
+
       <section class="secondary-content wrapper-content">
         <h2 class="secondary__title section__title"></h2>
         <div class="row mx-4 pt-6 ps-4">
@@ -219,6 +220,15 @@ export default {
     toAddPage() {
       this.$router.push("/add");
     },
+    sortByPrice(order) {
+      const cardsCopy = [...this.cards];
+
+      if (order === 'highToLow') {
+        this.cards = cardsCopy.sort((a, b) => b.discountedPrice - a.discountedPrice); // 價格高到低
+      } else {
+        this.cards = cardsCopy.sort((a, b) => a.discountedPrice - b.discountedPrice); // 價格低到高
+      }
+    },
     redirectToDetail(card) {
       this.$router.push({
         path: `/details`,
@@ -252,6 +262,28 @@ export default {
     handleAddSuccess() {
       this.closeAddPage(); // 新增成功後關閉模態框
     },
+  },
+  created() {
+    fetch("/db/items", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        data.map((item) => ({
+          imageUrl: item.imageUrl,
+          groceryName: item.groceryName,
+          discountedPrice: item.discountedPrice,
+          storeAddress: item.storeAddress,
+        })).forEach((card) => {
+          this.cards.push(card);
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   },
   // beforeUnmount() {
   //   if (this.socket) {
