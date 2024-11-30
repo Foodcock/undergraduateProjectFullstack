@@ -23,9 +23,11 @@
           <i :class="passwordVisible ? 'bx bx-show eye-icon' : 'bx bx-hide eye-icon'
             " @click="showPassword"></i>
         </div>
-        <div>
-          <input type="checkbox" id="isMerchant" v-model="isMerchant" />
-          <label for="isMerchant">我是商家</label>
+        <div class="toggle-container">
+          <input type="checkbox" id="isMerchant" v-model="isMerchant" class="toggle-input" />
+          <label for="isMerchant" class="toggle-label">
+            <span class="toggle-text">我是商家</span>
+          </label>
         </div>
         <button type="submit" class="button">Register</button>
 
@@ -169,7 +171,7 @@ export default {
 .inputBox i {
   font-size: 20px;
   position: absolute;
-  top: 54.5%;
+  top: 52.5%;
   right: 55px;
 }
 
@@ -226,5 +228,59 @@ export default {
 
 .registerLink p a:hover {
   text-decoration: underline;
+}
+
+.toggle-container {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.toggle-input {
+  display: none;
+}
+
+.toggle-label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding-left: 10px;
+}
+
+.toggle-label::before {
+  content: '';
+  width: 40px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  margin-right: 10px;
+  transition: background-color 0.3s;
+}
+
+.toggle-label::after {
+  content: '';
+  width: 18px;
+  height: 18px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  left: 11.5px;
+  top: 3px;
+  transition: transform 0.3s;
+  transform: translateX(0);
+}
+
+.toggle-input:checked+.toggle-label::before {
+  background-color: #4caf50;
+}
+
+.toggle-input:checked+.toggle-label::after {
+  transform: translateX(20px);
+}
+
+.toggle-text {
+  color: white;
+  font-size: 16px;
 }
 </style>
