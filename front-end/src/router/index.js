@@ -9,6 +9,7 @@ import StorePage from '../views/StorePage.vue'
 import MerchantPage from '../views/MerchantPage.vue'
 import MemberDetail from '../views/MemberDetail.vue'
 import DetailPage from '../views/DetailPage.vue'
+import test from '../views/test.vue'
 
 const routes = [
   {
@@ -51,6 +52,10 @@ const routes = [
     path: '/details',
     name: 'detail',
     component: DetailPage
+  }, {
+    path: '/test',
+    name: 'test',
+    component: test
   }, {
     path: '/',
     redirect: '/home'

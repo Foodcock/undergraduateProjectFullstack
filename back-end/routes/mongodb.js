@@ -131,7 +131,7 @@ router.post('/append', async (req, res) => {
     }
 });
 
-router.post('/generateItems', async (req, res) => {
+router.get('/generate', async (req, res) => {
     try {
         let fakeData = generateFakeData();
         const otherConnection = await mongoose.createConnection('mongodb://127.0.0.1:27017/mockStore');
@@ -140,11 +140,51 @@ router.post('/generateItems', async (req, res) => {
             await OtherDatabaseModel.create(fakeData[i]);
         }
         await otherConnection.close();
-        res.sendStatus(201);
+        res.status(201).json(fakeData);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
+
+router.post('/store', async (req, res) => {
+    try {
+        const inputData = req.body;
+
+        if (!Array.isArray(inputData)) {
+            return res.status(400).json({ error: "資料格式錯誤，應為 JSON 陣列。" });
+        }
+
+        const otherConnection = await mongoose.createConnection('mongodb://127.0.0.1:27017/mockStore');
+        const OtherDatabaseModel = otherConnection.model('Grocery', storeGrocery.schema);
+
+        // 將資料逐筆存入資料庫
+        for (const item of inputData) {
+            // 可選：新增資料驗證邏輯
+            if (
+                typeof item.groceryName !== 'string' ||
+                typeof item.price !== 'number' ||
+                typeof item.discount !== 'boolean' ||
+                typeof item.discountedPrice !== 'number' ||
+                typeof item.expirationDate !== 'string' ||
+                typeof item.storeName !== 'string' ||
+                typeof item.storeAddress !== 'string'
+            ) {
+                throw new Error("資料格式錯誤");
+            }
+
+            // 儲存到資料庫
+            await OtherDatabaseModel.create(item);
+        }
+
+        await otherConnection.close();
+
+        res.sendStatus(201);
+    } catch (error) {
+        console.error("錯誤:", error.message);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 
 router.post('/role', async (request, response) => {
     const { email } = request.body;
