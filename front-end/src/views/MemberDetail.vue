@@ -11,10 +11,6 @@
           <label for="email">Email:</label>
           <span>{{ member.email }}</span>
         </div>
-        <div class="info-item">
-          <label for="phone">電話:</label>
-          <span>{{ member.phone }}</span>
-        </div>
       </div>
     </div>
   </div>

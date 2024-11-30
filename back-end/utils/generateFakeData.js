@@ -44,7 +44,7 @@ const storeGroups = {
 function generateFakeData() {
     let fakeData = [];
     let brands = ["7-11", "全家", "萊爾富", "OK", "全聯"];
-    let count = 10000;
+    let count = 1000;
     const selectedStores = brands.flatMap(brand => storeGroups[brand] || []);
 
     for (let i = 0; i < count; i++) {
