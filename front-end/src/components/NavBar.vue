@@ -2,7 +2,7 @@
   <div id="nav-bar">
     <div class="header-content wrapper-content">
       <router-link to="/home" id="home-link">
-        <h1 class="logo">FoodCock</h1>
+        <h1 class="logo">Food Synergy</h1>
       </router-link>
       <div class="search">
         <input class="search-bar" type="text" name="search" id="search" placeholder="輸入你想尋找的店家" v-model="searchQuery"
