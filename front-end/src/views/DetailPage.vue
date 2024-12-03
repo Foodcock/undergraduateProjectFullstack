@@ -34,10 +34,29 @@ export default {
     },
     methods: {
         addToCart(item) {
-            let cart = JSON.parse(localStorage.getItem("cart")) || [];
-            cart.push(item);
-            localStorage.setItem("cart", JSON.stringify(cart));
-            alert(item.groceryName + " 已加入購物車!");
+            fetch("/db/items/user", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(item),
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        return response.json().then((error) => {
+                            throw new Error(error.message);
+                        });
+                    }
+                    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+                    cart.push(item);
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    alert(item.groceryName + " 已加入購物車!");
+                    this.$router.push("/home");
+                })
+                .catch((error) => {
+                    console.error("錯誤:", error);
+                    alert("加入購物車失敗: " + error.message);
+                });
         },
     },
 };

@@ -6,22 +6,14 @@
         <div class="accordion" id="accordionPanel">
           <div class="accordion-item" v-for="(storeItems, storeName, index) in groupedItems" :key="storeName">
             <h2 class="accordion-header" :id="'panels-heading-' + index">
-              <button
-                class="accordion-button text-dark fs-5 fw-bold"
-                type="button"
-                :data-bs-toggle="'collapse'"
-                :data-bs-target="'#panels-collapse-' + index"
-                aria-expanded="true"
-                :aria-controls="'panels-collapse-' + index"
-              >
+              <button class="accordion-button text-dark fs-5 fw-bold" type="button" :data-bs-toggle="'collapse'"
+                :data-bs-target="'#panels-collapse-' + index" aria-expanded="true"
+                :aria-controls="'panels-collapse-' + index">
                 {{ storeName }}
               </button>
             </h2>
-            <div
-              :id="'panels-collapse-' + index"
-              class="accordion-collapse collapse show"
-              :aria-labelledby="'panels-heading-' + index"
-            >
+            <div :id="'panels-collapse-' + index" class="accordion-collapse collapse show"
+              :aria-labelledby="'panels-heading-' + index">
               <div class="accordion-body bg-light">
                 <div class="row row-cols-sm-1 row-cols-md-2 row-cols-lg-2 row-cols-xl-4 g-2 g-lg-3">
                   <div class="col" v-for="item in storeItems" :key="item.id">
@@ -133,15 +125,33 @@ export default {
       return images[groceryName] || "images/default.png";
     },
     addToCart(item) {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
-      cart.push(item);
-      localStorage.setItem("cart", JSON.stringify(cart));
-      const index = this.items.indexOf(item);
-
-      if (index > -1) {
-        this.items.splice(index, 1);
-      }
-      alert(item.groceryName + "已加入購物車!");
+      fetch("/db/items/store", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(item),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            return response.json().then((error) => {
+              throw new Error(error.message);
+            });
+          }
+          console.log("刪除成功");
+          let cart = JSON.parse(localStorage.getItem("cart")) || [];
+          cart.push(item);
+          localStorage.setItem("cart", JSON.stringify(cart));
+          const index = this.items.indexOf(item);
+          if (index > -1) {
+            this.items.splice(index, 1);
+          }
+          alert(item.groceryName + "已加入購物車!");
+        })
+        .catch((error) => {
+          console.error("錯誤:", error);
+          alert("加入購物車失敗: " + error.message);
+        });
     },
     handleSearchQuery(query) {
       this.$nextTick(() => {
@@ -192,23 +202,29 @@ export default {
 
 .card-body {
   display: flex;
-  justify-content: center; /* 水平居中 */
-  align-items: center;     /* 垂直居中 */
+  justify-content: center;
+  /* 水平居中 */
+  align-items: center;
+  /* 垂直居中 */
 }
 
 .accordion-body {
-  background-color: rgba(144, 189, 231, 0.479); /* 設定和背景一致的顏色 */
+  background-color: rgba(144, 189, 231, 0.479);
+  /* 設定和背景一致的顏色 */
 }
 
 .accordion-button {
-  background-color: rgba(144, 189, 231, 0.479); /* 確保按鈕背景色也一致 */
+  background-color: rgba(144, 189, 231, 0.479);
+  /* 確保按鈕背景色也一致 */
 }
 
 .accordion-button:not(.collapsed) {
-  background-color: rgba(144, 189, 231, 0.479); /* 展開時按鈕背景色 */
+  background-color: rgba(144, 189, 231, 0.479);
+  /* 展開時按鈕背景色 */
 }
 
 .accordion-button:hover {
-  background-color: rgba(144, 189, 231, 0.6); /* 滑鼠移上去的效果 */
+  background-color: rgba(144, 189, 231, 0.6);
+  /* 滑鼠移上去的效果 */
 }
 </style>

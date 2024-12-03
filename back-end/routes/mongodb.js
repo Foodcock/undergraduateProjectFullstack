@@ -89,12 +89,25 @@ router.delete('/items', async (req, res) => {
     }
 });
 
-router.delete('/items/temp', async (req, res) => {
+router.delete('/items/store', async (req, res) => {
     try {
         const grocery = await storeGrocery.deleteOne({
             storeName: req.body.storeName,
+            storeAddress: req.body.storeAddress,
+            expirationDate: req.body.expirationDate,
+        });
+        res.json(grocery);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.delete('/items/user', async (req, res) => {
+    try {
+        const grocery = await Grocery.deleteOne({
             groceryName: req.body.groceryName,
             discountedPrice: req.body.discountedPrice,
+            storeAddress: req.body.storeAddress,
         });
         res.json(grocery);
     } catch (error) {
