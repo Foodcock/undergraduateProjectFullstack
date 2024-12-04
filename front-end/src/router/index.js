@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import AddPage from '../views/AddPage.vue'
+// import AddPage from '../views/AddPage.vue'
 import CartPage from '../views/CartPage.vue'
 import HomePage from '../views/HomePage.vue'
 import LoginPage from '../views/LoginPage.vue'
@@ -10,13 +10,15 @@ import MerchantPage from '../views/MerchantPage.vue'
 import MemberDetail from '../views/MemberDetail.vue'
 import DetailPage from '../views/DetailPage.vue'
 import test from '../views/test.vue'
+import NotFoundPage from '../views/NotFoundPage.vue'
 
 const routes = [
+  // {
+  //   path: '/add',
+  //   name: 'add',
+  //   component: AddPage
+  // }, 
   {
-    path: '/add',
-    name: 'add',
-    component: AddPage
-  }, {
     path: '/cart',
     name: 'cart',
     component: CartPage
@@ -60,10 +62,10 @@ const routes = [
     path: '/',
     redirect: '/home'
   },
-  // , {
-  //   path: '/:pathMatch(.*)*',
-  //   component: NotFoundPage
-  // }
+  {
+    path: '/:pathMatch(.*)*',
+    component: NotFoundPage
+  }
 ]
 
 const router = createRouter({
